@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% set active_nav = 'matters' %}
+{% block title %}Matters - Legal Redact{% endblock %}
+{% block brand_subtitle %}Matter-level privacy operations{% endblock %}
+{% block styles %}
+    <style>
+        /* Matters in the shared design language (workstation.css). */
+        .matter-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 140px; gap: 12px; margin-top: 16px; }
+        .matter-form input { min-height: 40px; }
+        @media (max-width: 980px) { .matter-form { grid-template-columns: 1fr; } }
+    </style>
+{% endblock %}
+{% block topbar %}
+            <div class="shell-banner"><strong>Client / matter workspace</strong><div class="trust-strip"><span class="trust-pill">Documents</span><span class="trust-pill">Review Matrix</span><span class="trust-pill">Artifacts</span></div></div>
+            <header class="page-header"><h1>Matters</h1><p class="page-lede">{{ positioning }}</p></header>
+{% endblock %}
+{% block content %}
+            <main class="content">
+                {% if can_review %}
+                <section class="card card-pad">
+                    <h2 class="section-title">Create Matter</h2>
+                    <form class="matter-form" onsubmit="createMatter(event)">
+                        <input id="matterName" placeholder="Matter name">
+                        <input id="matterDescription" placeholder="Description">
+                        <button class="primary" type="submit">Create</button>
+                    </form>
+                </section>
+                {% endif %}
+                <section class="table-wrap">
+                    <table class="data-table">
+                        <thead><tr><th style="width: 28%">Matter</th><th>Client</th><th>Status</th><th>Documents</th><th>Review Queue</th><th>OCR</th><th>Critical</th><th>Artifacts</th></tr></thead>
+                        <tbody id="matterRows"><tr><td colspan="8">Loading matters...</td></tr></tbody>
+                    </table>
+                </section>
+            </main>
+{% endblock %}
+{% block after_shell %}
+    <script src="{{ url_for('static', filename='escape.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadMatters);
+
+        async function loadMatters() {
+            const response = await fetch('/api/matters');
+            const data = await response.json();
+            const rows = data.matters || [];
+            document.getElementById('matterRows').innerHTML = rows.length ? rows.map((matter) => `
+                <tr onclick="window.location.href='/matter/${matter.id}'">
+                    <td><div class="row-title">${escapeHtml(matter.name)}</div><div class="row-meta">${escapeHtml(matter.description || '')}</div></td>
+                    <td>${escapeHtml(matter.client_name || '-')}</td>
+                    <td><span class="badge">${escapeHtml(matter.status || 'active')}</span></td>
+                    <td>${Number(matter.document_count || 0)}</td>
+                    <td>${Number(matter.review_queue_count || 0)}</td>
+                    <td>${Number(matter.needs_ocr_count || 0)}</td>
+                    <td>${Number(matter.critical_finding_count || 0)}</td>
+                    <td>${Number(matter.artifact_count || 0)}</td>
+                </tr>
+            `).join('') : '<tr><td colspan="8">No matters yet.</td></tr>';
+        }
+
+        async function createMatter(event) {
+            event.preventDefault();
+            const response = await fetch('/api/matters', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: document.getElementById('matterName').value, description: document.getElementById('matterDescription').value })
+            });
+            if (response.ok) {
+                document.getElementById('matterName').value = '';
+                document.getElementById('matterDescription').value = '';
+                await loadMatters();
+            } else {
+                const data = await response.json().catch(() => ({}));
+                alert(data.error || 'Matter could not be created.');
+            }
+        }
+
+        async function logout() { await fetch('/logout', { method: 'POST' }); window.location.href = '/login'; }
+    </script>
+{% endblock %}

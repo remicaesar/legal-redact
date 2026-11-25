@@ -1,0 +1,764 @@
+{
+ "source": {
+  "file": "samples/documents/turkish_petition.docx",
+  "variant": "paragraph starting 'Vekili: Av.' removed",
+  "masked": [
+   "tax_number",
+   "turkish_national_id"
+  ],
+  "extension": ".docx",
+  "extraction_status": "Complete",
+  "language": "TR",
+  "language_label": "Turkish",
+  "residual_risk_at_detection": "High"
+ },
+ "text": "Tamamen kurgusal dava dilekçesi\nSENTETİK ÖRNEK / SYNTHETIC SAMPLE. Bu belge eğitim için uydurulmuştur. Kişiler, kurumlar, mahkeme, adres ve olaylar gerçek değildir. Hukuki tavsiye veya kullanılabilir bir dilekçe değildir.\nMasalkent 3. Asliye Hukuk Mahkemesi\nDavacı: Deniz Kurgusal\nTCKN: 107••••••48 (rastgele gösterim numarası)\nDavalı: MASAL KUTUSU ÖRNEK ANONİM ŞİRKETİ\nVKN: 807•••••47 (rastgele gösterim numarası)\nAdres: Hayal Mahallesi, Bulut Sokak No: 8, Masalkent (uydurma adres)\nE-posta: deniz.kurgusal@example.com\nDosya No: 2026/42 Esas (uydurma dosya)\nKonu\nTamamen kurgusal bir maket teslimine ilişkin bedelin iadesi talebidir.\nAçıklamalar\nTaraflar 12.02.2026 tarihinde bir sergi maketi için anlaşmıştır. Davacı 1.250 TL ödediğini, ancak maketin teslim edilmediğini ileri sürmektedir. Bu olay yalnızca inceleme alıştırması için yazılmıştır.\nİstem\nÖrnek bedelin iadesine karar verilmesi talep olunur. Gerçek bir başvuru yapılmayacaktır.\nDavacı Deniz Kurgusal / İmza atılmamıştır\nKimlik ve vergi numaraları gösterim amacıyla rastgele üretilmiştir ve yalnızca uydurma taraflarla eşleştirilmiştir. Hiçbir gerçek kişi veya şirketle ilişkilendirmedik. Kontrol basamaklarının geçerli olması numaranın kullanılmadığını kanıtlamaz; gerçek bir numarayla tesadüfi eşleşme dışlanamaz.",
+ "findings": [
+  {
+   "id": 1,
+   "category": "court_or_authority",
+   "label": "Court / authority",
+   "basis": "Matched a court, chamber, prosecutor's office, judgeship, notary, enforcement office, tax office or other authority name; the placeholder names which kind it is.",
+   "risk": "HIGH",
+   "direct": false,
+   "placeholder": "[COURT_1]",
+   "sample": "Masalkent 3. Asliye Hukuk Mahkemesi",
+   "start": 222,
+   "end": 257,
+   "matches": [
+    [
+     222,
+     257,
+     35,
+     1
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 2,
+   "category": "party_role",
+   "label": "Party role",
+   "basis": "Matched a procedural role word (davacı, davalı, şüpheli, tanık, …).",
+   "risk": "MEDIUM",
+   "direct": false,
+   "placeholder": "[PARTY_ROLE_1]",
+   "sample": "Davacı",
+   "start": 258,
+   "end": 264,
+   "matches": [
+    [
+     258,
+     264,
+     6,
+     1
+    ],
+    [
+     712,
+     718,
+     6,
+     0
+    ],
+    [
+     943,
+     949,
+     6,
+     0
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 3,
+   "category": "natural_person_name",
+   "label": "Person name",
+   "basis": "Matched a name after a title (Av., Dr., Sayın, Mr, Mrs) or a party-role word (davacı, şüpheli, kiracı), a known Turkish or English given name, or a name on a labelled line, in a list or in a signature block, or the bare surname or repeat of a full name found elsewhere in the document.",
+   "risk": "HIGH",
+   "direct": true,
+   "placeholder": "[PERSON_1]",
+   "sample": "Deniz Kurgusal",
+   "start": 266,
+   "end": 280,
+   "matches": [
+    [
+     266,
+     280,
+     14,
+     1
+    ],
+    [
+     950,
+     964,
+     14,
+     0
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 4,
+   "category": "turkish_national_id",
+   "label": "Turkish national ID (TCKN)",
+   "basis": "Matched an 11-digit number that PASSED the official TCKN check-digit validation.",
+   "risk": "CRITICAL",
+   "direct": true,
+   "placeholder": "[NATIONAL_ID_1]",
+   "sample": "107••••••48",
+   "start": 287,
+   "end": 298,
+   "matches": [
+    [
+     287,
+     298,
+     11,
+     1
+    ]
+   ],
+   "masked": true
+  },
+  {
+   "id": 5,
+   "category": "party_role",
+   "label": "Party role",
+   "basis": "Matched a procedural role word (davacı, davalı, şüpheli, tanık, …).",
+   "risk": "MEDIUM",
+   "direct": false,
+   "placeholder": "[PARTY_ROLE_2]",
+   "sample": "Davalı",
+   "start": 328,
+   "end": 334,
+   "matches": [
+    [
+     328,
+     334,
+     6,
+     1
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 6,
+   "category": "company_name",
+   "label": "Company name",
+   "basis": "Matched a company name ending in a legal-form suffix (A.Ş., LİMİTED ŞİRKETİ, Ltd. Şti.), a law firm name (… Hukuk Bürosu, … Avukatlık Ortaklığı), or a short name the document defines for a company.",
+   "risk": "HIGH",
+   "direct": true,
+   "placeholder": "[COMPANY_1]",
+   "sample": "MASAL KUTUSU ÖRNEK ANONİM ŞİRKETİ",
+   "start": 336,
+   "end": 369,
+   "matches": [
+    [
+     336,
+     369,
+     33,
+     1
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 7,
+   "category": "tax_number",
+   "label": "Tax number (VKN)",
+   "basis": "Matched a VKN keyword followed by a 10-digit number that PASSED VKN check-digit validation.",
+   "risk": "HIGH",
+   "direct": true,
+   "placeholder": "[TAX_NUMBER_1]",
+   "sample": "VKN: 807•••••47",
+   "start": 370,
+   "end": 385,
+   "matches": [
+    [
+     370,
+     385,
+     15,
+     1
+    ]
+   ],
+   "masked": true
+  },
+  {
+   "id": 8,
+   "category": "address",
+   "label": "Address",
+   "basis": "Matched an address fragment (mahalle, cadde, sokak, apartman, ilçe) with its leading street name, or an English street line or UK postcode with the town and postcode beside it.",
+   "risk": "HIGH",
+   "direct": true,
+   "placeholder": "[ADDRESS_1]",
+   "sample": "Hayal Mahallesi, Bulut Sokak No: 8, Masalkent (uydurma adres)",
+   "start": 422,
+   "end": 483,
+   "matches": [
+    [
+     422,
+     483,
+     61,
+     1
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 9,
+   "category": "email_address",
+   "label": "Email address",
+   "basis": "Matched an email address pattern.",
+   "risk": "HIGH",
+   "direct": true,
+   "placeholder": "[EMAIL_1]",
+   "sample": "deniz.kurgusal@example.com",
+   "start": 493,
+   "end": 519,
+   "matches": [
+    [
+     493,
+     519,
+     26,
+     1
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 10,
+   "category": "case_or_investigation_number",
+   "label": "Case / file number",
+   "basis": "Matched a case-file keyword (Esas, Karar, Soruşturma, Takip, Yevmiye, UYAP) followed by a YYYY/NNN number, a notary's journal (yevmiye) number, or a labelled English claim or case reference (Claim No., Case Number, Our Ref).",
+   "risk": "HIGH",
+   "direct": true,
+   "placeholder": "[CASE_NUMBER_1]",
+   "sample": "Dosya No: 2026/42",
+   "start": 520,
+   "end": 537,
+   "matches": [
+    [
+     520,
+     537,
+     17,
+     1
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 11,
+   "category": "date",
+   "label": "Date",
+   "basis": "Matched a calendar date.",
+   "risk": "MEDIUM",
+   "direct": false,
+   "placeholder": "[DATE_1]",
+   "sample": "12.02.2026",
+   "start": 656,
+   "end": 666,
+   "matches": [
+    [
+     656,
+     666,
+     10,
+     1
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 12,
+   "category": "party_role",
+   "label": "Party role",
+   "basis": "Matched a procedural role word (davacı, davalı, şüpheli, tanık, …).",
+   "risk": "MEDIUM",
+   "direct": false,
+   "placeholder": "[PARTY_ROLE_1]",
+   "sample": "Davacı",
+   "start": 712,
+   "end": 718,
+   "matches": [
+    [
+     712,
+     718,
+     6,
+     1
+    ],
+    [
+     258,
+     264,
+     6,
+     0
+    ],
+    [
+     943,
+     949,
+     6,
+     0
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 13,
+   "category": "money_amount",
+   "label": "Financial amount",
+   "basis": "Matched a currency amount (TL, USD, EUR, £, …).",
+   "risk": "MEDIUM",
+   "direct": false,
+   "placeholder": "[AMOUNT_1]",
+   "sample": "1.250 TL",
+   "start": 719,
+   "end": 727,
+   "matches": [
+    [
+     719,
+     727,
+     8,
+     1
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 14,
+   "category": "party_role",
+   "label": "Party role",
+   "basis": "Matched a procedural role word (davacı, davalı, şüpheli, tanık, …).",
+   "risk": "MEDIUM",
+   "direct": false,
+   "placeholder": "[PARTY_ROLE_1]",
+   "sample": "Davacı",
+   "start": 943,
+   "end": 949,
+   "matches": [
+    [
+     943,
+     949,
+     6,
+     1
+    ],
+    [
+     258,
+     264,
+     6,
+     0
+    ],
+    [
+     712,
+     718,
+     6,
+     0
+    ]
+   ],
+   "masked": false
+  },
+  {
+   "id": 15,
+   "category": "natural_person_name",
+   "label": "Person name",
+   "basis": "Matched a name after a title (Av., Dr., Sayın, Mr, Mrs) or a party-role word (davacı, şüpheli, kiracı), a known Turkish or English given name, or a name on a labelled line, in a list or in a signature block, or the bare surname or repeat of a full name found elsewhere in the document.",
+   "risk": "HIGH",
+   "direct": true,
+   "placeholder": "[PERSON_1]",
+   "sample": "Deniz Kurgusal",
+   "start": 950,
+   "end": 964,
+   "matches": [
+    [
+     950,
+     964,
+     14,
+     1
+    ],
+    [
+     266,
+     280,
+     14,
+     0
+    ]
+   ],
+   "masked": false
+  }
+ ],
+ "category_counts": {
+  "Court / authority": 1,
+  "Party role": 4,
+  "Person name": 2,
+  "Turkish national ID (TCKN)": 1,
+  "Company name": 1,
+  "Tax number (VKN)": 1,
+  "Address": 1,
+  "Email address": 1,
+  "Case / file number": 1,
+  "Date": 1,
+  "Financial amount": 1
+ },
+ "direct_count": 8,
+ "kept_id": 6,
+ "states": {
+  "uploaded": {
+   "gate": {
+    "allowed": false,
+    "decision": "Blocked until redaction is completed and reviewed",
+    "conditions": [
+     {
+      "id": "extraction_complete",
+      "label": "Extraction complete",
+      "passed": true,
+      "detail": "Complete"
+     },
+     {
+      "id": "ocr_resolved",
+      "label": "OCR accepted or not required",
+      "passed": true,
+      "detail": "not_required"
+     },
+     {
+      "id": "language_supported",
+      "label": "Document language is covered by the detection rules",
+      "passed": true,
+      "detail": "Turkish"
+     },
+     {
+      "id": "residual_risk_low",
+      "label": "Residual risk after review is Low",
+      "passed": false,
+      "detail": "currently High"
+     },
+     {
+      "id": "no_critical_findings",
+      "label": "No undecided critical findings",
+      "passed": false,
+      "detail": "1 outstanding"
+     },
+     {
+      "id": "no_direct_identifiers",
+      "label": "No direct identifiers remain",
+      "passed": false,
+      "detail": "at least one remains"
+     },
+     {
+      "id": "redaction_completed",
+      "label": "Redaction pass completed",
+      "passed": false,
+      "detail": "not marked complete"
+     },
+     {
+      "id": "human_review_approved",
+      "label": "Human review approved",
+      "passed": false,
+      "detail": "not approved"
+     }
+    ],
+    "residual_after_review": "High"
+   },
+   "export_gate": {
+    "allowed": false,
+    "conditions": [
+     {
+      "id": "docx_source",
+      "label": "Source file is a DOCX",
+      "passed": true,
+      "detail": ".docx"
+     },
+     {
+      "id": "redaction_completed",
+      "label": "Redaction marked complete",
+      "passed": false,
+      "detail": "required"
+     },
+     {
+      "id": "human_review_approved",
+      "label": "Human review approved",
+      "passed": false,
+      "detail": "required"
+     },
+     {
+      "id": "findings_decided",
+      "label": "Every finding decided",
+      "passed": false,
+      "detail": "15 undecided"
+     },
+     {
+      "id": "no_approved_text_retained",
+      "label": "No approved item kept by a retained finding",
+      "passed": true,
+      "detail": "clear"
+     }
+    ]
+   }
+  },
+  "kept": {
+   "statuses": {
+    "1": "approved",
+    "2": "approved",
+    "3": "approved",
+    "4": "approved",
+    "5": "approved",
+    "6": "retained",
+    "7": "approved",
+    "8": "approved",
+    "9": "approved",
+    "10": "approved",
+    "11": "approved",
+    "12": "approved",
+    "13": "approved",
+    "14": "approved",
+    "15": "approved"
+   },
+   "gate": {
+    "allowed": false,
+    "decision": "Blocked: direct identifiers remain after review; residual risk after review is Medium, not Low.",
+    "conditions": [
+     {
+      "id": "extraction_complete",
+      "label": "Extraction complete",
+      "passed": true,
+      "detail": "Complete"
+     },
+     {
+      "id": "ocr_resolved",
+      "label": "OCR accepted or not required",
+      "passed": true,
+      "detail": "not_required"
+     },
+     {
+      "id": "language_supported",
+      "label": "Document language is covered by the detection rules",
+      "passed": true,
+      "detail": "Turkish"
+     },
+     {
+      "id": "residual_risk_low",
+      "label": "Residual risk after review is Low",
+      "passed": false,
+      "detail": "currently Medium"
+     },
+     {
+      "id": "no_critical_findings",
+      "label": "No undecided critical findings",
+      "passed": true,
+      "detail": "clear"
+     },
+     {
+      "id": "no_direct_identifiers",
+      "label": "No direct identifiers remain",
+      "passed": false,
+      "detail": "at least one remains"
+     },
+     {
+      "id": "redaction_completed",
+      "label": "Redaction pass completed",
+      "passed": true,
+      "detail": "done"
+     },
+     {
+      "id": "human_review_approved",
+      "label": "Human review approved",
+      "passed": true,
+      "detail": "approved"
+     }
+    ],
+    "residual_after_review": "Medium"
+   },
+   "export_gate": {
+    "allowed": true,
+    "conditions": [
+     {
+      "id": "docx_source",
+      "label": "Source file is a DOCX",
+      "passed": true,
+      "detail": ".docx"
+     },
+     {
+      "id": "redaction_completed",
+      "label": "Redaction marked complete",
+      "passed": true,
+      "detail": "done"
+     },
+     {
+      "id": "human_review_approved",
+      "label": "Human review approved",
+      "passed": true,
+      "detail": "approved"
+     },
+     {
+      "id": "findings_decided",
+      "label": "Every finding decided",
+      "passed": true,
+      "detail": "clear"
+     },
+     {
+      "id": "no_approved_text_retained",
+      "label": "No approved item kept by a retained finding",
+      "passed": true,
+      "detail": "clear"
+     }
+    ]
+   },
+   "export_paragraphs": [
+    "Tamamen kurgusal dava dilekçesi",
+    "SENTETİK ÖRNEK / SYNTHETIC SAMPLE. Bu belge eğitim için uydurulmuştur. Kişiler, kurumlar, mahkeme, adres ve olaylar gerçek değildir. Hukuki tavsiye veya kullanılabilir bir dilekçe değildir.",
+    "[COURT_1]",
+    "[PARTY_ROLE_1]: [PERSON_1]",
+    "TCKN: [NATIONAL_ID_1] (rastgele gösterim numarası)",
+    "[PARTY_ROLE_2]: MASAL KUTUSU ÖRNEK ANONİM ŞİRKETİ",
+    "[TAX_NUMBER_1] (rastgele gösterim numarası)",
+    "Adres: [ADDRESS_1]",
+    "E-posta: [EMAIL_1]",
+    "[CASE_NUMBER_1] Esas (uydurma dosya)",
+    "Konu",
+    "Tamamen kurgusal bir maket teslimine ilişkin bedelin iadesi talebidir.",
+    "Açıklamalar",
+    "Taraflar [DATE_1] tarihinde bir sergi maketi için anlaşmıştır. [PARTY_ROLE_1] [AMOUNT_1] ödediğini, ancak maketin teslim edilmediğini ileri sürmektedir. Bu olay yalnızca inceleme alıştırması için yazılmıştır.",
+    "İstem",
+    "Örnek bedelin iadesine karar verilmesi talep olunur. Gerçek bir başvuru yapılmayacaktır.",
+    "[PARTY_ROLE_1] [PERSON_1] / İmza atılmamıştır",
+    "Kimlik ve vergi numaraları gösterim amacıyla rastgele üretilmiştir ve yalnızca uydurma taraflarla eşleştirilmiştir. Hiçbir gerçek kişi veya şirketle ilişkilendirmedik. Kontrol basamaklarının geçerli olması numaranın kullanılmadığını kanıtlamaz; gerçek bir numarayla tesadüfi eşleşme dışlanamaz."
+   ],
+   "kept_name_in_export": true
+  },
+  "all": {
+   "statuses": {
+    "1": "approved",
+    "2": "approved",
+    "3": "approved",
+    "4": "approved",
+    "5": "approved",
+    "6": "approved",
+    "7": "approved",
+    "8": "approved",
+    "9": "approved",
+    "10": "approved",
+    "11": "approved",
+    "12": "approved",
+    "13": "approved",
+    "14": "approved",
+    "15": "approved"
+   },
+   "gate": {
+    "allowed": true,
+    "decision": "Allowed for external LLM use after completed redaction and approval.",
+    "conditions": [
+     {
+      "id": "extraction_complete",
+      "label": "Extraction complete",
+      "passed": true,
+      "detail": "Complete"
+     },
+     {
+      "id": "ocr_resolved",
+      "label": "OCR accepted or not required",
+      "passed": true,
+      "detail": "not_required"
+     },
+     {
+      "id": "language_supported",
+      "label": "Document language is covered by the detection rules",
+      "passed": true,
+      "detail": "Turkish"
+     },
+     {
+      "id": "residual_risk_low",
+      "label": "Residual risk after review is Low",
+      "passed": true,
+      "detail": "currently Low"
+     },
+     {
+      "id": "no_critical_findings",
+      "label": "No undecided critical findings",
+      "passed": true,
+      "detail": "clear"
+     },
+     {
+      "id": "no_direct_identifiers",
+      "label": "No direct identifiers remain",
+      "passed": true,
+      "detail": "none remain"
+     },
+     {
+      "id": "redaction_completed",
+      "label": "Redaction pass completed",
+      "passed": true,
+      "detail": "done"
+     },
+     {
+      "id": "human_review_approved",
+      "label": "Human review approved",
+      "passed": true,
+      "detail": "approved"
+     }
+    ],
+    "residual_after_review": "Low"
+   },
+   "export_gate": {
+    "allowed": true,
+    "conditions": [
+     {
+      "id": "docx_source",
+      "label": "Source file is a DOCX",
+      "passed": true,
+      "detail": ".docx"
+     },
+     {
+      "id": "redaction_completed",
+      "label": "Redaction marked complete",
+      "passed": true,
+      "detail": "done"
+     },
+     {
+      "id": "human_review_approved",
+      "label": "Human review approved",
+      "passed": true,
+      "detail": "approved"
+     },
+     {
+      "id": "findings_decided",
+      "label": "Every finding decided",
+      "passed": true,
+      "detail": "clear"
+     },
+     {
+      "id": "no_approved_text_retained",
+      "label": "No approved item kept by a retained finding",
+      "passed": true,
+      "detail": "clear"
+     }
+    ]
+   },
+   "export_paragraphs": [
+    "Tamamen kurgusal dava dilekçesi",
+    "SENTETİK ÖRNEK / SYNTHETIC SAMPLE. Bu belge eğitim için uydurulmuştur. Kişiler, kurumlar, mahkeme, adres ve olaylar gerçek değildir. Hukuki tavsiye veya kullanılabilir bir dilekçe değildir.",
+    "[COURT_1]",
+    "[PARTY_ROLE_1]: [PERSON_1]",
+    "TCKN: [NATIONAL_ID_1] (rastgele gösterim numarası)",
+    "[PARTY_ROLE_2]: [COMPANY_1]",
+    "[TAX_NUMBER_1] (rastgele gösterim numarası)",
+    "Adres: [ADDRESS_1]",
+    "E-posta: [EMAIL_1]",
+    "[CASE_NUMBER_1] Esas (uydurma dosya)",
+    "Konu",
+    "Tamamen kurgusal bir maket teslimine ilişkin bedelin iadesi talebidir.",
+    "Açıklamalar",
+    "Taraflar [DATE_1] tarihinde bir sergi maketi için anlaşmıştır. [PARTY_ROLE_1] [AMOUNT_1] ödediğini, ancak maketin teslim edilmediğini ileri sürmektedir. Bu olay yalnızca inceleme alıştırması için yazılmıştır.",
+    "İstem",
+    "Örnek bedelin iadesine karar verilmesi talep olunur. Gerçek bir başvuru yapılmayacaktır.",
+    "[PARTY_ROLE_1] [PERSON_1] / İmza atılmamıştır",
+    "Kimlik ve vergi numaraları gösterim amacıyla rastgele üretilmiştir ve yalnızca uydurma taraflarla eşleştirilmiştir. Hiçbir gerçek kişi veya şirketle ilişkilendirmedik. Kontrol basamaklarının geçerli olması numaranın kullanılmadığını kanıtlamaz; gerçek bir numarayla tesadüfi eşleşme dışlanamaz."
+   ],
+   "samples_left_in_export": 0
+  }
+ },
+ "supported_extensions": [
+  ".doc",
+  ".docx",
+  ".jpeg",
+  ".jpg",
+  ".md",
+  ".pdf",
+  ".png",
+  ".pptx",
+  ".txt",
+  ".udf",
+  ".xlsx",
+  ".zip"
+ ]
+}

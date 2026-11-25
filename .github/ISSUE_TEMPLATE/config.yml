@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/remicaesar/legal-redact/security/advisories/new
+    about: Do not open a public issue for a security problem or a data leak. Report it privately through GitHub private vulnerability reporting; SECURITY.md explains what to include.

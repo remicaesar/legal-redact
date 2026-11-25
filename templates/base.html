@@ -1,0 +1,82 @@
+{#- The one copy of the page skeleton and the workstation chrome.
+
+    Every page extends this. A child sets, at its top level:
+
+      active_nav   which place the page is: dashboard, matters, studio,
+                   audit or settings. Exactly one nav item is marked current,
+                   and only when the page names it.
+      studio_href  the Studio's own URL. The Studio is a place only when a
+                   document is open, so its nav item exists only there.
+      compact_nav  true on pages whose sidebar collapses to an icon rail, where
+                   the label is hidden and the title is the only name shown.
+      nav_icon_aria_hidden, nav_current_after_href
+                   keep the markup a page rendered before it extended this.
+
+    and fills brand_subtitle, styles, topbar, content and after_shell.
+    landing.html replaces head_assets and body: it is the unauthenticated
+    marketing page and carries no workstation chrome.
+
+    The sidebar lists places; views are chips. A nav href never carries a
+    querystring: "Review Queue", "OCR Queue" and "DOCX QA" were the dashboard
+    with a querystring, and the sidebar went on highlighting "Dashboard" while
+    you stood on one. They are chips above the document table now.
+    tests/test_dashboard_navigation.py pins this over every rendered page. -#}
+{%- from "partials/brand.html" import brand_icon, wordmark, favicon_link -%}
+{%- macro nav_item(href, glyph, label, key) -%}
+<a class="nav-item{{ ' active' if active_nav == key }}"{% if active_nav == key and not nav_current_after_href %} aria-current="page"{% endif %} href="{{ href }}"{% if active_nav == key and nav_current_after_href %} aria-current="page"{% endif %}{% if compact_nav %} title="{{ label }}"{% endif %}><span class="nav-icon"{% if nav_icon_aria_hidden %} aria-hidden="true"{% endif %}>{{ glyph }}</span>{{ label }}</a>
+{%- endmacro -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {{ favicon_link() }}
+    {% block head_assets %}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="/static/csrf.js"></script>
+    <link rel="stylesheet" href="/static/workstation.css">
+    {% endblock %}
+    {% block styles %}{% endblock %}
+</head>
+<body{% block body_attrs %}{% endblock %}>
+{% block body %}
+    <div class="app-shell">
+        <nav class="app-sidebar" aria-label="Workstation navigation">
+            <div class="brand-block">
+                {{ brand_icon() }}
+                <div class="brand-title">{{ wordmark() }}</div>
+                <div class="brand-subtitle">{% block brand_subtitle %}Local privacy workstation{% endblock %}</div>
+            </div>
+            {% block sidebar_note %}{% endblock %}
+            <div class="nav-section">
+                <div class="nav-section-label">Workspace</div>
+                {{ nav_item('/', 'D', 'Dashboard', 'dashboard') }}
+                {{ nav_item('/matters', 'M', 'Matters', 'matters') }}
+                {% if studio_href %}
+                {{ nav_item(studio_href, 'R', 'Redaction Studio', 'studio') }}
+                {% endif %}
+            </div>
+            {% if can_admin %}
+            <div class="nav-section">
+                <div class="nav-section-label">Admin</div>
+                {{ nav_item('/audit-log', 'A', 'Audit Log', 'audit') }}
+                {{ nav_item('/settings', 'S', 'Settings', 'settings') }}
+            </div>
+            {% endif %}
+            <div class="local-only-note" title="All processing, storage, and exports happen on this machine. No document content is sent to any external service.">Local only · data stays on this device</div>
+            <div class="sidebar-footer">
+                <div class="user-role">{{ current_user.username }} · {{ current_user.role }}</div>
+                <button class="logout-button" type="button" onclick="logout()"{% if compact_nav %} title="Log out"{% endif %}>Log out</button>
+            </div>
+        </nav>
+
+        <div class="shell-main">
+            {% block topbar %}{% endblock %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}
+{% block after_shell %}{% endblock %}
+</body>
+</html>

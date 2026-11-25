@@ -1,0 +1,20 @@
+{#- templates/landing.html is GENERATED from landing/landing.template.html by
+    landing/scripts/prerender.mjs. Edit the template or landing/src/, never the
+    generated file, then run `cd landing && npm ci && npm run build`.
+
+    The unauthenticated landing page at /welcome. It extends the base for the
+    skeleton only: no workstation chrome, and no CSRF token, because it makes no
+    state-changing request. The markup inside #root is the React app rendered at
+    build time; /static/landing/landing.js attaches to it in the browser, and the
+    page reads without it. -#}
+{% extends "base.html" %}
+{% block title %}Legal Redact — local privacy workstation for legal documents{% endblock %}
+{% block head_assets %}
+    <meta name="description" content="Legal Redact is a local privacy workstation for legal documents: it flags what could identify a person, a reviewer decides every finding, and it prepares reviewed DOCX and PDF redactions. It runs on your own computer.">
+    <link rel="stylesheet" href="/static/workstation.css">
+    <link rel="stylesheet" href="/static/landing/landing.css">
+{% endblock %}
+{% block body %}
+<div id="root">{% raw %}<!--app-html-->{% endraw %}</div>
+<script type="module" src="/static/landing/landing.js"></script>
+{% endblock %}

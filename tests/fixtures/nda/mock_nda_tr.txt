@@ -1,0 +1,45 @@
+KARŞILIKLI GİZLİLİK SÖZLEŞMESİ
+SENTETİK ÖRNEK / SYNTHETIC SAMPLE. Bu sözleşme yalnızca test amacıyla uydurulmuştur. Taraflar, kişiler, adresler, numaralar ve olaylar gerçek değildir.
+1. TARAFLAR
+İşbu Karşılıklı Gizlilik Sözleşmesi ("Sözleşme"), bir tarafta Kestane Yazılım Anonim Şirketi (bundan sonra "Kestane" olarak anılacaktır) ile diğer tarafta Defne Lojistik Limited Şirketi (bundan sonra "Defne" olarak anılacaktır) arasında 14.03.2026 tarihinde imzalanmıştır.
+Kestane Yazılım Anonim Şirketi
+Adres: Lale Mahallesi, Papatya Sokak No: 12, Kadıköy, İstanbul
+Vergi Dairesi: Kozyatağı Vergi Dairesi, VKN: 1111111114
+MERSİS No: 0111111111400015
+Telefon: 0299 412 33 10
+E-posta: hukuk@kestane.example.com
+Temsilcisi: Selin Arıkan, Genel Müdür, TCKN: 11111111110
+Defne Lojistik Limited Şirketi
+Adres: Çınar Mahallesi, Menekşe Caddesi No: 7 Daire 3, Çankaya, Ankara
+Vergi Dairesi: Çankaya Vergi Dairesi, VKN: 2222222224
+MERSİS No: 0222222222400017
+Telefon: 0522 314 27 80
+E-posta: ihale@defne.example.org
+Temsilcisi: Murat Ekinci, Yönetim Kurulu Üyesi, TCKN: 22222222220
+2. KONU
+İşbu Sözleşmenin konusu, tarafların ortak bir depo yönetim yazılımı projesini değerlendirmesi sırasında birbirlerine açıklayacakları gizli bilgilerin korunmasına ilişkin usul ve esasların belirlenmesidir.
+3. GİZLİ BİLGİ
+Gizli bilgi; ticari sırlar, müşteri listeleri, fiyatlandırma bilgileri, kaynak kodları, teknik çizimler ve tarafların yazılı olarak gizli olduğunu belirttiği her türlü bilgi ve belgedir. Kamuya açık olan veya alıcı tarafın bağımsız olarak geliştirdiği bilgiler gizli bilgi sayılmaz.
+4. YÜKÜMLÜLÜKLER
+Her iki taraf da gizli bilgiyi yalnızca proje değerlendirmesi amacıyla kullanacak, üçüncü kişilere açıklamayacak ve en az kendi gizli bilgisine gösterdiği özenle koruyacaktır. Gizli bilgiye yalnızca bilmesi gereken çalışanlar erişebilir.
+5. SÜRE
+Sözleşme imza tarihinden itibaren iki yıl süreyle yürürlükte kalır. Gizlilik yükümlülüğü sözleşmenin sona ermesinden sonra beş yıl daha devam eder.
+6. CEZAİ ŞART
+Gizlilik yükümlülüğünü ihlal eden taraf, diğer tarafa her bir ihlal için 250.000 TL cezai şart ödemeyi kabul eder. Cezai şart aşağıdaki hesaba ödenecektir:
+Hesap sahibi: Kestane Yazılım Anonim Şirketi
+IBAN: TR00 0001 0002 0003 0004 0005 06
+7. İLETİŞİM
+Sözleşmeye ilişkin bildirimler yukarıdaki adreslere yapılır. Kestane adına irtibat kişisi Burak Yıldırım (Hukuk Müşaviri, burak.yildirim@kestane.example.com, 0525 118 40 22); Defne adına irtibat kişisi Elif Karaca (Satın Alma Müdürü, elif.karaca@defne.example.org) olarak belirlenmiştir.
+8. UYUŞMAZLIKLARIN ÇÖZÜMÜ
+İşbu Sözleşmeden doğacak uyuşmazlıklarda Türk hukuku uygulanır ve İstanbul Anadolu Mahkemeleri ile İcra Daireleri yetkilidir. Daha önce taraflar arasında görülen İstanbul Anadolu 4. Asliye Ticaret Mahkemesi 2025/318 Esas sayılı dosya bu Sözleşmenin kapsamı dışındadır.
+9. YÜRÜRLÜK
+İşbu Sözleşme dokuz maddeden ibaret olup 14.03.2026 tarihinde iki nüsha olarak imzalanmıştır.
+Kestane Yazılım Anonim Şirketi
+Selin Arıkan
+Genel Müdür
+İmza: ______________
+Defne Lojistik Limited Şirketi
+Murat Ekinci
+Yönetim Kurulu Üyesi
+İmza: ______________
+Kimlik, vergi, MERSİS ve IBAN numaraları gösterim amacıyla seçilmiş örnek değerlerdir; IBAN kontrol hanesi geçersizdir (TR00) ve hiçbir gerçek hesaba ait olamaz. Telefon numaraları tahsis edilmemiş aralıklardan, e-posta alan adları ayrılmış example alan adlarından seçilmiştir.

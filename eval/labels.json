@@ -1,0 +1,3278 @@
+{
+  "note": "Held-out synthetic evaluation corpus. Offsets are emitted by eval/generate_corpus.py at the moment each entity is placed. Every name, company, identifier, address, matter number and amount is invented. This corpus is a MEASUREMENT set: never tune a detection rule against it.",
+  "seed": 20260918,
+  "documents": [
+    {
+      "id": "tr_petition_1",
+      "lang": "tr",
+      "kind": "pleading",
+      "path": "tr_petition_1.txt",
+      "labels": [
+        {
+          "category": "court_or_authority",
+          "text": "İZMIR 5. AILE MAHKEMESI",
+          "start": 0,
+          "end": 23
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Esas No: 2025/1895",
+          "start": 41,
+          "end": 59
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Hakan Özkeskin",
+          "start": 73,
+          "end": 87
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "99511330584",
+          "start": 105,
+          "end": 116
+        },
+        {
+          "category": "address",
+          "text": "Zafer Caddesi No: 171, Karşıyaka / İzmir",
+          "start": 131,
+          "end": 171
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Peri Sarıkayalı",
+          "start": 189,
+          "end": 204
+        },
+        {
+          "category": "bar_registration_number",
+          "text": "Baro Sicil No: 40843",
+          "start": 206,
+          "end": 226
+        },
+        {
+          "category": "email_address",
+          "text": "peri.sarikayali@sentetikofis.example.org",
+          "start": 241,
+          "end": 281
+        },
+        {
+          "category": "phone_number",
+          "text": "0520 877 73 97",
+          "start": 295,
+          "end": 309
+        },
+        {
+          "category": "company_name",
+          "text": "Gökkuşağı Gıda Ltd. Şti.",
+          "start": 323,
+          "end": 347
+        },
+        {
+          "category": "tax_number",
+          "text": "4838781827",
+          "start": 378,
+          "end": 388
+        },
+        {
+          "category": "date",
+          "text": "07.03.2024",
+          "start": 476,
+          "end": 486
+        },
+        {
+          "category": "money_amount",
+          "text": "711.712 TL",
+          "start": 583,
+          "end": 593
+        },
+        {
+          "category": "date",
+          "text": "06.02.2026",
+          "start": 666,
+          "end": 676
+        },
+        {
+          "category": "iban",
+          "text": "TR43 7863 5284 1986 5497 9382 80",
+          "start": 764,
+          "end": 796
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Peri Sarıkayalı",
+          "start": 910,
+          "end": 925
+        }
+      ]
+    },
+    {
+      "id": "tr_contract_1",
+      "lang": "tr",
+      "kind": "contract",
+      "path": "tr_contract_1.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Çelikhan Makine Limited Şirketi",
+          "start": 55,
+          "end": 86
+        },
+        {
+          "category": "company_name",
+          "text": "Pusula Yazılım Anonim Şirketi",
+          "start": 118,
+          "end": 147
+        },
+        {
+          "category": "date",
+          "text": "01.03.2023",
+          "start": 180,
+          "end": 190
+        },
+        {
+          "category": "address",
+          "text": "Menekşe Sokak No: 107, Muratpaşa / Antalya",
+          "start": 235,
+          "end": 277
+        },
+        {
+          "category": "mersis_number",
+          "text": "0547316570367603",
+          "start": 299,
+          "end": 315
+        },
+        {
+          "category": "address",
+          "text": "Çınaraltı Mahallesi 54. Sokak No: 1, Nilüfer / Bursa",
+          "start": 334,
+          "end": 386
+        },
+        {
+          "category": "tax_number",
+          "text": "5558897118",
+          "start": 405,
+          "end": 415
+        },
+        {
+          "category": "money_amount",
+          "text": "58.481 TL",
+          "start": 450,
+          "end": 459
+        },
+        {
+          "category": "iban",
+          "text": "TR69 8343 9698 6332 4205 8486 65",
+          "start": 509,
+          "end": 541
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Nazende Yıldırımhan",
+          "start": 584,
+          "end": 603
+        },
+        {
+          "category": "phone_number",
+          "text": "0522 877 58 82",
+          "start": 605,
+          "end": 619
+        },
+        {
+          "category": "email_address",
+          "text": "nazende.yildirimhan@ornekhukuk.example.org",
+          "start": 621,
+          "end": 663
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Hakan Özkeskin",
+          "start": 684,
+          "end": 698
+        },
+        {
+          "category": "phone_number",
+          "text": "0528 416 84 44",
+          "start": 700,
+          "end": 714
+        },
+        {
+          "category": "email_address",
+          "text": "hakan.ozkeskin@ornekhukuk.example.org",
+          "start": 716,
+          "end": 753
+        },
+        {
+          "category": "court_or_authority",
+          "text": "Ankara 12. İş Mahkemesi",
+          "start": 796,
+          "end": 819
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Nazende Yıldırımhan",
+          "start": 842,
+          "end": 861
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Hakan Özkeskin",
+          "start": 864,
+          "end": 878
+        }
+      ]
+    },
+    {
+      "id": "tr_hearing_1",
+      "lang": "tr",
+      "kind": "hearing_minutes",
+      "path": "tr_hearing_1.txt",
+      "labels": [
+        {
+          "category": "court_or_authority",
+          "text": "Bursa 2. Sulh Hukuk Mahkemesi",
+          "start": 0,
+          "end": 29
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Esas No: 2025/5900",
+          "start": 57,
+          "end": 75
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Ömür Çetinkayalı",
+          "start": 83,
+          "end": 99
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Elif Türkoğluer",
+          "start": 107,
+          "end": 122
+        },
+        {
+          "category": "date",
+          "text": "08.02.2023",
+          "start": 139,
+          "end": 149
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Onur Çetinkayalı",
+          "start": 164,
+          "end": 180
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Devrim Eryılmazer",
+          "start": 184,
+          "end": 201
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Nazende Ünsalcan",
+          "start": 205,
+          "end": 221
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Onur Çetinkayalı",
+          "start": 243,
+          "end": 259
+        },
+        {
+          "category": "address",
+          "text": "Gülbahar Mahallesi Papatya Sokak No: 146, Kadıköy / İstanbul",
+          "start": 295,
+          "end": 355
+        },
+        {
+          "category": "phone_number",
+          "text": "0525 721 18 12",
+          "start": 413,
+          "end": 427
+        },
+        {
+          "category": "date",
+          "text": "28.01.2025",
+          "start": 473,
+          "end": 483
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Ömür Çetinkayalı",
+          "start": 528,
+          "end": 544
+        }
+      ]
+    },
+    {
+      "id": "tr_enforcement_1",
+      "lang": "tr",
+      "kind": "enforcement",
+      "path": "tr_enforcement_1.txt",
+      "labels": [
+        {
+          "category": "court_or_authority",
+          "text": "ÇANKAYA 2. İcra Müdürlüğü",
+          "start": 5,
+          "end": 30
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Takip No: 2025/3473",
+          "start": 55,
+          "end": 74
+        },
+        {
+          "category": "company_name",
+          "text": "Çelikhan Makine Anonim Şirketi",
+          "start": 86,
+          "end": 116
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Hüdaverdi Şahinkaya",
+          "start": 128,
+          "end": 147
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "93882310756",
+          "start": 164,
+          "end": 175
+        },
+        {
+          "category": "address",
+          "text": "Çınaraltı Mahallesi 82. Sokak No: 11, Karşıyaka / İzmir",
+          "start": 187,
+          "end": 242
+        },
+        {
+          "category": "money_amount",
+          "text": "586.361 TL",
+          "start": 254,
+          "end": 264
+        },
+        {
+          "category": "date",
+          "text": "15.09.2025",
+          "start": 276,
+          "end": 286
+        },
+        {
+          "category": "iban",
+          "text": "TR50 7061 2762 6399 8060 5483 76",
+          "start": 401,
+          "end": 433
+        },
+        {
+          "category": "phone_number",
+          "text": "0522 209 20 39",
+          "start": 446,
+          "end": 460
+        },
+        {
+          "category": "email_address",
+          "text": "icra.kalemi@sentetikadalet.example.org",
+          "start": 463,
+          "end": 501
+        }
+      ]
+    },
+    {
+      "id": "tr_employment_1",
+      "lang": "tr",
+      "kind": "employment",
+      "path": "tr_employment_1.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Bereketli Tarım Ltd. Şti.",
+          "start": 0,
+          "end": 25
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cem Gündoğmuş",
+          "start": 77,
+          "end": 90
+        },
+        {
+          "category": "date",
+          "text": "22.11.2024",
+          "start": 106,
+          "end": 116
+        },
+        {
+          "category": "date",
+          "text": "21.07.2024",
+          "start": 186,
+          "end": 196
+        },
+        {
+          "category": "bar_registration_number",
+          "text": "Sicil No: 352722",
+          "start": 250,
+          "end": 266
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "73080344098",
+          "start": 285,
+          "end": 296
+        },
+        {
+          "category": "address",
+          "text": "Çınaraltı Mahallesi 7. Sokak No: 20, Selçuklu / Konya",
+          "start": 316,
+          "end": 369
+        },
+        {
+          "category": "money_amount",
+          "text": "736.612 TL",
+          "start": 403,
+          "end": 413
+        },
+        {
+          "category": "iban",
+          "text": "TR79 4978 1546 3470 1252 5529 83",
+          "start": 447,
+          "end": 479
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Tunahan Gündoğmuş",
+          "start": 557,
+          "end": 574
+        },
+        {
+          "category": "phone_number",
+          "text": "0522 630 88 39",
+          "start": 579,
+          "end": 593
+        },
+        {
+          "category": "email_address",
+          "text": "tunahan.gundogmus@burohukuk.example.org",
+          "start": 613,
+          "end": 652
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Tunahan Gündoğmuş",
+          "start": 706,
+          "end": 723
+        }
+      ]
+    },
+    {
+      "id": "tr_poa_1",
+      "lang": "tr",
+      "kind": "notary",
+      "path": "tr_poa_1.txt",
+      "labels": [
+        {
+          "category": "court_or_authority",
+          "text": "BEŞİKTAŞ 23. Noterliği",
+          "start": 5,
+          "end": 27
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Yevmiye No: 2025/1916",
+          "start": 54,
+          "end": 75
+        },
+        {
+          "category": "date",
+          "text": "08.09.2026",
+          "start": 94,
+          "end": 104
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Alptuğ Çetinkayalı",
+          "start": 121,
+          "end": 139
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "82126553844",
+          "start": 156,
+          "end": 167
+        },
+        {
+          "category": "address",
+          "text": "Zafer Caddesi No: 157, Karşıyaka / İzmir",
+          "start": 175,
+          "end": 215
+        },
+        {
+          "category": "passport_number",
+          "text": "U72819257",
+          "start": 229,
+          "end": 238
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Zeynep Sarıkayalı",
+          "start": 251,
+          "end": 268
+        },
+        {
+          "category": "bar_registration_number",
+          "text": "Baro Sicil No: 32510",
+          "start": 284,
+          "end": 304
+        },
+        {
+          "category": "address",
+          "text": "Gülbahar Mahallesi Papatya Sokak No: 160, Karşıyaka / İzmir",
+          "start": 318,
+          "end": 377
+        },
+        {
+          "category": "court_or_authority",
+          "text": "İzmir 5. Aile Mahkemesi",
+          "start": 399,
+          "end": 422
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Alptuğ Çetinkayalı",
+          "start": 487,
+          "end": 505
+        }
+      ]
+    },
+    {
+      "id": "tr_expert_1",
+      "lang": "tr",
+      "kind": "expert_report",
+      "path": "tr_expert_1.txt",
+      "labels": [
+        {
+          "category": "natural_person_name",
+          "text": "Tunahan Aydınlıoğlu",
+          "start": 29,
+          "end": 48
+        },
+        {
+          "category": "date",
+          "text": "27.10.2024",
+          "start": 63,
+          "end": 73
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Esas No: 2023/8395",
+          "start": 81,
+          "end": 99
+        },
+        {
+          "category": "court_or_authority",
+          "text": "Bursa 2. Sulh Hukuk Mahkemesi",
+          "start": 109,
+          "end": 138
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Melis Şahinkaya",
+          "start": 174,
+          "end": 189
+        },
+        {
+          "category": "address",
+          "text": "Barbaros Bulvarı No: 74 Daire: 5, Karşıyaka / İzmir",
+          "start": 254,
+          "end": 305
+        },
+        {
+          "category": "money_amount",
+          "text": "347.981 TL",
+          "start": 359,
+          "end": 369
+        },
+        {
+          "category": "money_amount",
+          "text": "578.191 TL",
+          "start": 414,
+          "end": 424
+        },
+        {
+          "category": "iban",
+          "text": "TR26 8515 8715 3497 7536 5154 68",
+          "start": 431,
+          "end": 463
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Tunahan Aydınlıoğlu",
+          "start": 522,
+          "end": 541
+        },
+        {
+          "category": "email_address",
+          "text": "tunahan.aydinlioglu@sentetikofis.example.org",
+          "start": 552,
+          "end": 596
+        }
+      ]
+    },
+    {
+      "id": "tr_kvkk_1",
+      "lang": "tr",
+      "kind": "kvkk_request",
+      "path": "tr_kvkk_1.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Akarsu Enerji Anonim Şirketi",
+          "start": 0,
+          "end": 28
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Sıla Çetinkayalı",
+          "start": 83,
+          "end": 99
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "53859719838",
+          "start": 116,
+          "end": 127
+        },
+        {
+          "category": "address",
+          "text": "Zafer Caddesi No: 117, Kadıköy / İstanbul",
+          "start": 144,
+          "end": 185
+        },
+        {
+          "category": "email_address",
+          "text": "sila.cetinkayali@ornekhukuk.example.org",
+          "start": 202,
+          "end": 241
+        },
+        {
+          "category": "phone_number",
+          "text": "0526 751 94 51",
+          "start": 258,
+          "end": 272
+        },
+        {
+          "category": "date",
+          "text": "05.08.2025",
+          "start": 289,
+          "end": 299
+        },
+        {
+          "category": "court_or_authority",
+          "text": "Kişisel Verileri Koruma Kurulu",
+          "start": 463,
+          "end": 493
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Sıla Çetinkayalı",
+          "start": 548,
+          "end": 564
+        }
+      ]
+    },
+    {
+      "id": "tr_lease_1",
+      "lang": "tr",
+      "kind": "lease",
+      "path": "tr_lease_1.txt",
+      "labels": [
+        {
+          "category": "natural_person_name",
+          "text": "Pınar Türkoğluer",
+          "start": 31,
+          "end": 47
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "68483806014",
+          "start": 64,
+          "end": 75
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Ömür Yıldırımhan",
+          "start": 84,
+          "end": 100
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "97295661320",
+          "start": 117,
+          "end": 128
+        },
+        {
+          "category": "address",
+          "text": "Zafer Caddesi No: 50, Muratpaşa / Antalya",
+          "start": 150,
+          "end": 191
+        },
+        {
+          "category": "date",
+          "text": "22.07.2024",
+          "start": 215,
+          "end": 225
+        },
+        {
+          "category": "money_amount",
+          "text": "81.181 TL",
+          "start": 245,
+          "end": 254
+        },
+        {
+          "category": "money_amount",
+          "text": "275.321 TL",
+          "start": 265,
+          "end": 275
+        },
+        {
+          "category": "iban",
+          "text": "TR37 8135 2624 5327 8135 4679 40",
+          "start": 290,
+          "end": 322
+        },
+        {
+          "category": "phone_number",
+          "text": "0528 194 30 63",
+          "start": 341,
+          "end": 355
+        },
+        {
+          "category": "email_address",
+          "text": "omur.yildirimhan@burohukuk.example.org",
+          "start": 358,
+          "end": 396
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Pınar Türkoğluer",
+          "start": 412,
+          "end": 428
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Ömür Yıldırımhan",
+          "start": 433,
+          "end": 449
+        }
+      ]
+    },
+    {
+      "id": "tr_board_1",
+      "lang": "tr",
+      "kind": "corporate",
+      "path": "tr_board_1.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Gökkuşağı Gıda Anonim Şirketi",
+          "start": 0,
+          "end": 29
+        },
+        {
+          "category": "date",
+          "text": "26.05.2023",
+          "start": 67,
+          "end": 77
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Karar No: 2023/5311",
+          "start": 88,
+          "end": 107
+        },
+        {
+          "category": "mersis_number",
+          "text": "0253682361282552",
+          "start": 119,
+          "end": 135
+        },
+        {
+          "category": "tax_number",
+          "text": "7480122145",
+          "start": 153,
+          "end": 163
+        },
+        {
+          "category": "address",
+          "text": "Menekşe Sokak No: 113, Selçuklu / Konya",
+          "start": 180,
+          "end": 219
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Sıla Bayraktaroğlu",
+          "start": 252,
+          "end": 270
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Sibel Kocatürkmen",
+          "start": 282,
+          "end": 299
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Bengisu Gündoğmuş",
+          "start": 308,
+          "end": 325
+        },
+        {
+          "category": "money_amount",
+          "text": "846.726 TL",
+          "start": 353,
+          "end": 363
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Sıla Bayraktaroğlu",
+          "start": 430,
+          "end": 448
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Sibel Kocatürkmen",
+          "start": 450,
+          "end": 467
+        }
+      ]
+    },
+    {
+      "id": "en_engagement_1",
+      "lang": "en",
+      "kind": "engagement_letter",
+      "path": "en_engagement_1.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "18 November 2024",
+          "start": 25,
+          "end": 41
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Wilhelmina Wynterbourne",
+          "start": 47,
+          "end": 70
+        },
+        {
+          "category": "company_name",
+          "text": "Crowhurst Foods Ltd.",
+          "start": 75,
+          "end": 95
+        },
+        {
+          "category": "address",
+          "text": "Floor 3, 178 Belvedere Court, Leeds LS1 4AP, United Kingdom",
+          "start": 105,
+          "end": 164
+        },
+        {
+          "category": "email_address",
+          "text": "wilhelmina.wynterbourne@fictionlaw.example.com",
+          "start": 172,
+          "end": 218
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0752",
+          "start": 230,
+          "end": 246
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Wilhelmina Wynterbourne",
+          "start": 253,
+          "end": 276
+        },
+        {
+          "category": "court_or_authority",
+          "text": "the Employment Tribunal sitting at Reading",
+          "start": 379,
+          "end": 421
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Claim No: HC-2026/9696",
+          "start": 441,
+          "end": 463
+        },
+        {
+          "category": "money_amount",
+          "text": "£220,431",
+          "start": 505,
+          "end": 513
+        },
+        {
+          "category": "money_amount",
+          "text": "£92,773",
+          "start": 557,
+          "end": 564
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Gwendolyn Fothergill",
+          "start": 623,
+          "end": 643
+        },
+        {
+          "category": "email_address",
+          "text": "gwendolyn.fothergill@fictionlaw.example.com",
+          "start": 667,
+          "end": 710
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Gwendolyn Fothergill",
+          "start": 731,
+          "end": 751
+        }
+      ]
+    },
+    {
+      "id": "en_spa_1",
+      "lang": "en",
+      "kind": "contract",
+      "path": "en_spa_1.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "28 June 2023",
+          "start": 52,
+          "end": 64
+        },
+        {
+          "category": "company_name",
+          "text": "Mortlake Renewables Inc.",
+          "start": 80,
+          "end": 104
+        },
+        {
+          "category": "address",
+          "text": "Unit 12, 146 Harrow Road, Leeds LS1 4AP, United Kingdom",
+          "start": 179,
+          "end": 234
+        },
+        {
+          "category": "company_name",
+          "text": "Stanbridge Logistics Ltd.",
+          "start": 260,
+          "end": 285
+        },
+        {
+          "category": "address",
+          "text": "165 Quillon Lane, Edinburgh EH2 2ER, United Kingdom",
+          "start": 317,
+          "end": 368
+        },
+        {
+          "category": "money_amount",
+          "text": "£737,360",
+          "start": 445,
+          "end": 453
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Montgomery Stanbridge",
+          "start": 558,
+          "end": 579
+        },
+        {
+          "category": "email_address",
+          "text": "montgomery.stanbridge@fictionlaw.example.com",
+          "start": 583,
+          "end": 627
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Stanbridge",
+          "start": 687,
+          "end": 707
+        },
+        {
+          "category": "email_address",
+          "text": "cornelius.stanbridge@sampletrust.example.com",
+          "start": 711,
+          "end": 755
+        },
+        {
+          "category": "court_or_authority",
+          "text": "the Employment Tribunal sitting at Reading",
+          "start": 809,
+          "end": 851
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Montgomery Stanbridge",
+          "start": 894,
+          "end": 915
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Stanbridge",
+          "start": 956,
+          "end": 976
+        }
+      ]
+    },
+    {
+      "id": "en_witness_1",
+      "lang": "en",
+      "kind": "witness_statement",
+      "path": "en_witness_1.txt",
+      "labels": [
+        {
+          "category": "natural_person_name",
+          "text": "BARNABY THISTLEWOOD",
+          "start": 21,
+          "end": 40
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Claim No: QB-2026/6866",
+          "start": 52,
+          "end": 74
+        },
+        {
+          "category": "court_or_authority",
+          "text": "the High Court of Justice, Business and Property Courts of England and Wales",
+          "start": 78,
+          "end": 154
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Barnaby Thistlewood",
+          "start": 159,
+          "end": 178
+        },
+        {
+          "category": "address",
+          "text": "Unit 17, 159 Harrow Road, Edinburgh EH2 2ER, United Kingdom",
+          "start": 183,
+          "end": 242
+        },
+        {
+          "category": "date",
+          "text": "9 June 2024",
+          "start": 361,
+          "end": 372
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Beatrix Wynterbourne",
+          "start": 379,
+          "end": 399
+        },
+        {
+          "category": "company_name",
+          "text": "Fairweather Robotics Limited",
+          "start": 418,
+          "end": 446
+        },
+        {
+          "category": "money_amount",
+          "text": "£879,944",
+          "start": 483,
+          "end": 491
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0568",
+          "start": 573,
+          "end": 589
+        },
+        {
+          "category": "email_address",
+          "text": "barnaby.thistlewood@sampletrust.example.com",
+          "start": 594,
+          "end": 637
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Barnaby Thistlewood",
+          "start": 717,
+          "end": 736
+        },
+        {
+          "category": "date",
+          "text": "21 January 2026",
+          "start": 744,
+          "end": 759
+        }
+      ]
+    },
+    {
+      "id": "en_settlement_1",
+      "lang": "en",
+      "kind": "settlement",
+      "path": "en_settlement_1.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "15 November 2023",
+          "start": 28,
+          "end": 44
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fitzgerald Ellersley",
+          "start": 59,
+          "end": 79
+        },
+        {
+          "category": "address",
+          "text": "179 Cobblewell Street, London EC2A 4NE, United Kingdom",
+          "start": 83,
+          "end": 137
+        },
+        {
+          "category": "company_name",
+          "text": "Mortlake Renewables Limited",
+          "start": 159,
+          "end": 186
+        },
+        {
+          "category": "address",
+          "text": "60 Cobblewell Street, Manchester M1 3BN, United Kingdom",
+          "start": 190,
+          "end": 245
+        },
+        {
+          "category": "money_amount",
+          "text": "£433,242",
+          "start": 318,
+          "end": 326
+        },
+        {
+          "category": "account_number",
+          "text": "account number 28019116",
+          "start": 415,
+          "end": 438
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Crowhurst",
+          "start": 471,
+          "end": 490
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0589",
+          "start": 505,
+          "end": 521
+        },
+        {
+          "category": "email_address",
+          "text": "cornelius.crowhurst@sampletrust.example.com",
+          "start": 525,
+          "end": 568
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fitzgerald Ellersley",
+          "start": 659,
+          "end": 679
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Crowhurst",
+          "start": 681,
+          "end": 700
+        }
+      ]
+    },
+    {
+      "id": "en_demand_1",
+      "lang": "en",
+      "kind": "demand_letter",
+      "path": "en_demand_1.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "1 September 2024",
+          "start": 21,
+          "end": 37
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Fothergill",
+          "start": 43,
+          "end": 63
+        },
+        {
+          "category": "address",
+          "text": "3 Marchmont Avenue, Suite 14, Edinburgh EH2 2ER, United Kingdom",
+          "start": 68,
+          "end": 131
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fothergill",
+          "start": 142,
+          "end": 152
+        },
+        {
+          "category": "company_name",
+          "text": "Quillon Analytics LLC",
+          "start": 166,
+          "end": 187
+        },
+        {
+          "category": "money_amount",
+          "text": "£660,986",
+          "start": 229,
+          "end": 237
+        },
+        {
+          "category": "date",
+          "text": "1 March 2024",
+          "start": 246,
+          "end": 258
+        },
+        {
+          "category": "court_or_authority",
+          "text": "the Court of Appeal (Civil Division)",
+          "start": 345,
+          "end": 381
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fitzgerald Stanbridge",
+          "start": 420,
+          "end": 441
+        },
+        {
+          "category": "email_address",
+          "text": "fitzgerald.stanbridge@exampleco.example.com",
+          "start": 445,
+          "end": 488
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0977",
+          "start": 492,
+          "end": 508
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fitzgerald Stanbridge",
+          "start": 530,
+          "end": 551
+        }
+      ]
+    },
+    {
+      "id": "en_board_1",
+      "lang": "en",
+      "kind": "corporate",
+      "path": "en_board_1.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Fairweather Robotics Inc.",
+          "start": 0,
+          "end": 25
+        },
+        {
+          "category": "date",
+          "text": "6 September 2025",
+          "start": 82,
+          "end": 98
+        },
+        {
+          "category": "address",
+          "text": "Unit 13, 45 Harrow Road, Leeds LS1 4AP, United Kingdom",
+          "start": 102,
+          "end": 156
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Desmond Sandringham",
+          "start": 169,
+          "end": 188
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Beatrix Wrenfield",
+          "start": 199,
+          "end": 216
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Nathaniel Ellersley",
+          "start": 230,
+          "end": 249
+        },
+        {
+          "category": "money_amount",
+          "text": "£987,523",
+          "start": 335,
+          "end": 343
+        },
+        {
+          "category": "company_name",
+          "text": "Quillon Analytics Ltd.",
+          "start": 364,
+          "end": 386
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Beatrix Wrenfield",
+          "start": 412,
+          "end": 429
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Desmond Sandringham",
+          "start": 478,
+          "end": 497
+        }
+      ]
+    },
+    {
+      "id": "en_employment_1",
+      "lang": "en",
+      "kind": "employment",
+      "path": "en_employment_1.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Quillon Analytics PLC",
+          "start": 33,
+          "end": 54
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Nathaniel Fothergill",
+          "start": 78,
+          "end": 98
+        },
+        {
+          "category": "address",
+          "text": "Floor 5, 150 Belvedere Court, Leeds LS1 4AP, United Kingdom",
+          "start": 102,
+          "end": 161
+        },
+        {
+          "category": "date",
+          "text": "23 September 2026",
+          "start": 192,
+          "end": 209
+        },
+        {
+          "category": "money_amount",
+          "text": "£749,292",
+          "start": 218,
+          "end": 226
+        },
+        {
+          "category": "passport_number",
+          "text": "U96015771",
+          "start": 291,
+          "end": 300
+        },
+        {
+          "category": "email_address",
+          "text": "nathaniel.fothergill@fictionlaw.example.com",
+          "start": 317,
+          "end": 360
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0843",
+          "start": 369,
+          "end": 385
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Montgomery Ashcombe",
+          "start": 423,
+          "end": 442
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Nathaniel Fothergill",
+          "start": 472,
+          "end": 492
+        }
+      ]
+    },
+    {
+      "id": "en_dpa_1",
+      "lang": "en",
+      "kind": "data_processing",
+      "path": "en_dpa_1.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "25 January 2026",
+          "start": 61,
+          "end": 76
+        },
+        {
+          "category": "company_name",
+          "text": "Fairweather Robotics Ltd.",
+          "start": 99,
+          "end": 124
+        },
+        {
+          "category": "address",
+          "text": "146 Cobblewell Street, Bristol BS1 6QA, United Kingdom",
+          "start": 126,
+          "end": 180
+        },
+        {
+          "category": "company_name",
+          "text": "Ravenscroft Media PLC",
+          "start": 192,
+          "end": 213
+        },
+        {
+          "category": "address",
+          "text": "Unit 1, 177 Harrow Road, Leeds LS1 4AP, United Kingdom",
+          "start": 215,
+          "end": 269
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Harrowgate",
+          "start": 309,
+          "end": 329
+        },
+        {
+          "category": "email_address",
+          "text": "cornelius.harrowgate@sampletrust.example.com",
+          "start": 331,
+          "end": 375
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Rosalind Corrigan",
+          "start": 413,
+          "end": 430
+        },
+        {
+          "category": "email_address",
+          "text": "rosalind.corrigan@sampletrust.example.com",
+          "start": 432,
+          "end": 473
+        },
+        {
+          "category": "money_amount",
+          "text": "£705,609",
+          "start": 610,
+          "end": 618
+        }
+      ]
+    },
+    {
+      "id": "en_hold_1",
+      "lang": "en",
+      "kind": "litigation_hold",
+      "path": "en_hold_1.txt",
+      "labels": [
+        {
+          "category": "natural_person_name",
+          "text": "Beatrix Fairweather",
+          "start": 60,
+          "end": 79
+        },
+        {
+          "category": "date",
+          "text": "20 January 2023",
+          "start": 103,
+          "end": 118
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Claim No: CL-2025/6408",
+          "start": 127,
+          "end": 149
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Gwendolyn Wynterbourne",
+          "start": 168,
+          "end": 190
+        },
+        {
+          "category": "email_address",
+          "text": "gwendolyn.wynterbourne@exampleco.example.com",
+          "start": 192,
+          "end": 236
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Henrietta Corrigan",
+          "start": 242,
+          "end": 260
+        },
+        {
+          "category": "email_address",
+          "text": "henrietta.corrigan@fictionlaw.example.com",
+          "start": 262,
+          "end": 303
+        },
+        {
+          "category": "company_name",
+          "text": "Ravenscroft Media Ltd.",
+          "start": 366,
+          "end": 388
+        },
+        {
+          "category": "money_amount",
+          "text": "£930,749",
+          "start": 432,
+          "end": 440
+        },
+        {
+          "category": "date",
+          "text": "20 November 2024",
+          "start": 449,
+          "end": 465
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Beatrix Fairweather",
+          "start": 500,
+          "end": 519
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0537",
+          "start": 523,
+          "end": 539
+        }
+      ]
+    },
+    {
+      "id": "en_nda_1",
+      "lang": "en",
+      "kind": "nda",
+      "path": "en_nda_1.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "26 June 2024",
+          "start": 39,
+          "end": 51
+        },
+        {
+          "category": "company_name",
+          "text": "Harrowgate Maritime Inc.",
+          "start": 62,
+          "end": 86
+        },
+        {
+          "category": "address",
+          "text": "Unit 5, 102 Harrow Road, Bristol BS1 6QA, United Kingdom",
+          "start": 106,
+          "end": 162
+        },
+        {
+          "category": "company_name",
+          "text": "Stanbridge Logistics Ltd.",
+          "start": 172,
+          "end": 197
+        },
+        {
+          "category": "address",
+          "text": "152 Anselm Road, Bristol BS1 6QA, United Kingdom",
+          "start": 217,
+          "end": 265
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Nathaniel Sandringham",
+          "start": 294,
+          "end": 315
+        },
+        {
+          "category": "email_address",
+          "text": "nathaniel.sandringham@fictionlaw.example.com",
+          "start": 317,
+          "end": 361
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Adelaide Blackwood",
+          "start": 367,
+          "end": 385
+        },
+        {
+          "category": "email_address",
+          "text": "adelaide.blackwood@fictionlaw.example.com",
+          "start": 387,
+          "end": 428
+        },
+        {
+          "category": "money_amount",
+          "text": "£763,128",
+          "start": 565,
+          "end": 573
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Nathaniel Sandringham",
+          "start": 586,
+          "end": 607
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Adelaide Blackwood",
+          "start": 612,
+          "end": 630
+        }
+      ]
+    },
+    {
+      "id": "tr_petition_2",
+      "lang": "tr",
+      "kind": "pleading",
+      "path": "tr_petition_2.txt",
+      "labels": [
+        {
+          "category": "court_or_authority",
+          "text": "ANKARA 12. İŞ MAHKEMESI",
+          "start": 0,
+          "end": 23
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Esas No: 2023/5655",
+          "start": 41,
+          "end": 59
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Kutluhan Balcıoğulları",
+          "start": 73,
+          "end": 95
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "14540689434",
+          "start": 113,
+          "end": 124
+        },
+        {
+          "category": "address",
+          "text": "Barbaros Bulvarı No: 173 Daire: 19, Selçuklu / Konya",
+          "start": 139,
+          "end": 191
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Emre Eryılmazer",
+          "start": 209,
+          "end": 224
+        },
+        {
+          "category": "bar_registration_number",
+          "text": "Baro Sicil No: 17391",
+          "start": 226,
+          "end": 246
+        },
+        {
+          "category": "email_address",
+          "text": "emre.eryilmazer@burohukuk.example.org",
+          "start": 261,
+          "end": 298
+        },
+        {
+          "category": "phone_number",
+          "text": "0526 276 62 68",
+          "start": 312,
+          "end": 326
+        },
+        {
+          "category": "company_name",
+          "text": "Pusula Yazılım Anonim Şirketi",
+          "start": 340,
+          "end": 369
+        },
+        {
+          "category": "tax_number",
+          "text": "3585364670",
+          "start": 400,
+          "end": 410
+        },
+        {
+          "category": "date",
+          "text": "05.06.2026",
+          "start": 498,
+          "end": 508
+        },
+        {
+          "category": "money_amount",
+          "text": "827.655 TL",
+          "start": 605,
+          "end": 615
+        },
+        {
+          "category": "date",
+          "text": "15.08.2024",
+          "start": 688,
+          "end": 698
+        },
+        {
+          "category": "iban",
+          "text": "TR45 6961 4472 1133 1092 6364 60",
+          "start": 786,
+          "end": 818
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Emre Eryılmazer",
+          "start": 932,
+          "end": 947
+        }
+      ]
+    },
+    {
+      "id": "tr_contract_2",
+      "lang": "tr",
+      "kind": "contract",
+      "path": "tr_contract_2.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Mavideniz Lojistik Ltd. Şti.",
+          "start": 55,
+          "end": 83
+        },
+        {
+          "category": "company_name",
+          "text": "Karaçam Tekstil Ltd. Şti.",
+          "start": 115,
+          "end": 140
+        },
+        {
+          "category": "date",
+          "text": "27.01.2023",
+          "start": 173,
+          "end": 183
+        },
+        {
+          "category": "address",
+          "text": "Zafer Caddesi No: 27, Kadıköy / İstanbul",
+          "start": 228,
+          "end": 268
+        },
+        {
+          "category": "mersis_number",
+          "text": "0429250276011837",
+          "start": 290,
+          "end": 306
+        },
+        {
+          "category": "address",
+          "text": "Yeşilvadi Caddesi Akasya Apartmanı No: 112, Karşıyaka / İzmir",
+          "start": 325,
+          "end": 386
+        },
+        {
+          "category": "tax_number",
+          "text": "7807491457",
+          "start": 405,
+          "end": 415
+        },
+        {
+          "category": "money_amount",
+          "text": "822.421 TL",
+          "start": 450,
+          "end": 460
+        },
+        {
+          "category": "iban",
+          "text": "TR68 2782 8529 7724 6926 3260 22",
+          "start": 510,
+          "end": 542
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Hüdaverdi Yıldırımhan",
+          "start": 585,
+          "end": 606
+        },
+        {
+          "category": "phone_number",
+          "text": "0524 216 27 11",
+          "start": 608,
+          "end": 622
+        },
+        {
+          "category": "email_address",
+          "text": "hudaverdi.yildirimhan@burohukuk.example.org",
+          "start": 624,
+          "end": 667
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Tolga Kocatürkmen",
+          "start": 688,
+          "end": 705
+        },
+        {
+          "category": "phone_number",
+          "text": "0520 286 84 68",
+          "start": 707,
+          "end": 721
+        },
+        {
+          "category": "email_address",
+          "text": "tolga.kocaturkmen@sentetikofis.example.org",
+          "start": 723,
+          "end": 765
+        },
+        {
+          "category": "court_or_authority",
+          "text": "İzmir 5. Aile Mahkemesi",
+          "start": 808,
+          "end": 831
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Hüdaverdi Yıldırımhan",
+          "start": 854,
+          "end": 875
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Tolga Kocatürkmen",
+          "start": 878,
+          "end": 895
+        }
+      ]
+    },
+    {
+      "id": "tr_hearing_2",
+      "lang": "tr",
+      "kind": "hearing_minutes",
+      "path": "tr_hearing_2.txt",
+      "labels": [
+        {
+          "category": "court_or_authority",
+          "text": "Antalya 9. Asliye Hukuk Mahkemesi",
+          "start": 0,
+          "end": 33
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Esas No: 2026/8758",
+          "start": 61,
+          "end": 79
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Kutluhan Bayraktaroğlu",
+          "start": 87,
+          "end": 109
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Elif Yıldırımhan",
+          "start": 117,
+          "end": 133
+        },
+        {
+          "category": "date",
+          "text": "19.12.2026",
+          "start": 150,
+          "end": 160
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Kemal Eryılmazer",
+          "start": 175,
+          "end": 191
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Tunahan Aydınlıoğlu",
+          "start": 195,
+          "end": 214
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Hüdaverdi Akbulutlu",
+          "start": 218,
+          "end": 237
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Kemal Eryılmazer",
+          "start": 259,
+          "end": 275
+        },
+        {
+          "category": "address",
+          "text": "Menekşe Sokak No: 101, Muratpaşa / Antalya",
+          "start": 311,
+          "end": 353
+        },
+        {
+          "category": "phone_number",
+          "text": "0526 352 46 31",
+          "start": 411,
+          "end": 425
+        },
+        {
+          "category": "date",
+          "text": "23.05.2026",
+          "start": 471,
+          "end": 481
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Kutluhan Bayraktaroğlu",
+          "start": 526,
+          "end": 548
+        }
+      ]
+    },
+    {
+      "id": "tr_enforcement_2",
+      "lang": "tr",
+      "kind": "enforcement",
+      "path": "tr_enforcement_2.txt",
+      "labels": [
+        {
+          "category": "court_or_authority",
+          "text": "KONAK 2. İcra Müdürlüğü",
+          "start": 5,
+          "end": 28
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Takip No: 2023/3647",
+          "start": 53,
+          "end": 72
+        },
+        {
+          "category": "company_name",
+          "text": "Çelikhan Makine Ltd. Şti.",
+          "start": 84,
+          "end": 109
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Bengisu Ünsalcan",
+          "start": 121,
+          "end": 137
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "87820230336",
+          "start": 154,
+          "end": 165
+        },
+        {
+          "category": "address",
+          "text": "Çınaraltı Mahallesi 43. Sokak No: 9, Selçuklu / Konya",
+          "start": 177,
+          "end": 230
+        },
+        {
+          "category": "money_amount",
+          "text": "570.346 TL",
+          "start": 242,
+          "end": 252
+        },
+        {
+          "category": "date",
+          "text": "10.10.2025",
+          "start": 264,
+          "end": 274
+        },
+        {
+          "category": "iban",
+          "text": "TR60 6305 2466 6388 5282 2969 97",
+          "start": 389,
+          "end": 421
+        },
+        {
+          "category": "phone_number",
+          "text": "0527 896 79 78",
+          "start": 434,
+          "end": 448
+        },
+        {
+          "category": "email_address",
+          "text": "icra.kalemi@sentetikadalet.example.org",
+          "start": 451,
+          "end": 489
+        }
+      ]
+    },
+    {
+      "id": "tr_employment_2",
+      "lang": "tr",
+      "kind": "employment",
+      "path": "tr_employment_2.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Karaçam Tekstil Limited Şirketi",
+          "start": 0,
+          "end": 31
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Burcu Bayraktaroğlu",
+          "start": 83,
+          "end": 102
+        },
+        {
+          "category": "date",
+          "text": "28.03.2023",
+          "start": 118,
+          "end": 128
+        },
+        {
+          "category": "date",
+          "text": "02.12.2025",
+          "start": 198,
+          "end": 208
+        },
+        {
+          "category": "bar_registration_number",
+          "text": "Sicil No: 632456",
+          "start": 262,
+          "end": 278
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "77635721648",
+          "start": 297,
+          "end": 308
+        },
+        {
+          "category": "address",
+          "text": "Çınaraltı Mahallesi 132. Sokak No: 13, Kadıköy / İstanbul",
+          "start": 328,
+          "end": 385
+        },
+        {
+          "category": "money_amount",
+          "text": "612.828 TL",
+          "start": 419,
+          "end": 429
+        },
+        {
+          "category": "iban",
+          "text": "TR73 3540 7444 6192 8415 4261 22",
+          "start": 463,
+          "end": 495
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Şevketcan Türkoğluer",
+          "start": 573,
+          "end": 593
+        },
+        {
+          "category": "phone_number",
+          "text": "0529 509 27 90",
+          "start": 598,
+          "end": 612
+        },
+        {
+          "category": "email_address",
+          "text": "sevketcan.turkogluer@burohukuk.example.org",
+          "start": 632,
+          "end": 674
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Şevketcan Türkoğluer",
+          "start": 728,
+          "end": 748
+        }
+      ]
+    },
+    {
+      "id": "tr_poa_2",
+      "lang": "tr",
+      "kind": "notary",
+      "path": "tr_poa_2.txt",
+      "labels": [
+        {
+          "category": "court_or_authority",
+          "text": "ALSANCAK 27. Noterliği",
+          "start": 5,
+          "end": 27
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Yevmiye No: 2023/6225",
+          "start": 54,
+          "end": 75
+        },
+        {
+          "category": "date",
+          "text": "21.10.2024",
+          "start": 94,
+          "end": 104
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Şevketcan Ünsalcan",
+          "start": 121,
+          "end": 139
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "68982283972",
+          "start": 156,
+          "end": 167
+        },
+        {
+          "category": "address",
+          "text": "Menekşe Sokak No: 124, Karşıyaka / İzmir",
+          "start": 175,
+          "end": 215
+        },
+        {
+          "category": "passport_number",
+          "text": "U45615006",
+          "start": 229,
+          "end": 238
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Serkan Çetinkayalı",
+          "start": 251,
+          "end": 269
+        },
+        {
+          "category": "bar_registration_number",
+          "text": "Baro Sicil No: 74695",
+          "start": 285,
+          "end": 305
+        },
+        {
+          "category": "address",
+          "text": "Menekşe Sokak No: 58, Muratpaşa / Antalya",
+          "start": 319,
+          "end": 360
+        },
+        {
+          "category": "court_or_authority",
+          "text": "İzmir 5. Aile Mahkemesi",
+          "start": 382,
+          "end": 405
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Şevketcan Ünsalcan",
+          "start": 470,
+          "end": 488
+        }
+      ]
+    },
+    {
+      "id": "tr_expert_2",
+      "lang": "tr",
+      "kind": "expert_report",
+      "path": "tr_expert_2.txt",
+      "labels": [
+        {
+          "category": "natural_person_name",
+          "text": "Kutluhan Türkoğluer",
+          "start": 29,
+          "end": 48
+        },
+        {
+          "category": "date",
+          "text": "16.02.2024",
+          "start": 63,
+          "end": 73
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Esas No: 2023/572",
+          "start": 81,
+          "end": 98
+        },
+        {
+          "category": "court_or_authority",
+          "text": "Bursa 2. Sulh Hukuk Mahkemesi",
+          "start": 108,
+          "end": 137
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Burcu Eryılmazer",
+          "start": 173,
+          "end": 189
+        },
+        {
+          "category": "address",
+          "text": "Zafer Caddesi No: 138, Kadıköy / İstanbul",
+          "start": 254,
+          "end": 295
+        },
+        {
+          "category": "money_amount",
+          "text": "967.136 TL",
+          "start": 349,
+          "end": 359
+        },
+        {
+          "category": "money_amount",
+          "text": "708.713 TL",
+          "start": 404,
+          "end": 414
+        },
+        {
+          "category": "iban",
+          "text": "TR58 5675 7684 1132 3784 7261 85",
+          "start": 421,
+          "end": 453
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Kutluhan Türkoğluer",
+          "start": 512,
+          "end": 531
+        },
+        {
+          "category": "email_address",
+          "text": "kutluhan.turkogluer@ornekhukuk.example.org",
+          "start": 542,
+          "end": 584
+        }
+      ]
+    },
+    {
+      "id": "tr_kvkk_2",
+      "lang": "tr",
+      "kind": "kvkk_request",
+      "path": "tr_kvkk_2.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Mavideniz Lojistik Anonim Şirketi",
+          "start": 0,
+          "end": 33
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Kutluhan Ünsalcan",
+          "start": 88,
+          "end": 105
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "85266273368",
+          "start": 122,
+          "end": 133
+        },
+        {
+          "category": "address",
+          "text": "Zafer Caddesi No: 63, Çankaya / Ankara",
+          "start": 150,
+          "end": 188
+        },
+        {
+          "category": "email_address",
+          "text": "kutluhan.unsalcan@sentetikofis.example.org",
+          "start": 205,
+          "end": 247
+        },
+        {
+          "category": "phone_number",
+          "text": "0528 733 99 73",
+          "start": 264,
+          "end": 278
+        },
+        {
+          "category": "date",
+          "text": "09.03.2024",
+          "start": 295,
+          "end": 305
+        },
+        {
+          "category": "court_or_authority",
+          "text": "Kişisel Verileri Koruma Kurulu",
+          "start": 469,
+          "end": 499
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Kutluhan Ünsalcan",
+          "start": 554,
+          "end": 571
+        }
+      ]
+    },
+    {
+      "id": "tr_lease_2",
+      "lang": "tr",
+      "kind": "lease",
+      "path": "tr_lease_2.txt",
+      "labels": [
+        {
+          "category": "natural_person_name",
+          "text": "Zeynep Eryılmazer",
+          "start": 31,
+          "end": 48
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "28758102418",
+          "start": 65,
+          "end": 76
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Alptuğ Gündoğmuş",
+          "start": 85,
+          "end": 101
+        },
+        {
+          "category": "turkish_national_id",
+          "text": "16439574784",
+          "start": 118,
+          "end": 129
+        },
+        {
+          "category": "address",
+          "text": "Gülbahar Mahallesi Papatya Sokak No: 6, Çankaya / Ankara",
+          "start": 151,
+          "end": 207
+        },
+        {
+          "category": "date",
+          "text": "06.06.2025",
+          "start": 231,
+          "end": 241
+        },
+        {
+          "category": "money_amount",
+          "text": "763.929 TL",
+          "start": 261,
+          "end": 271
+        },
+        {
+          "category": "money_amount",
+          "text": "668.239 TL",
+          "start": 282,
+          "end": 292
+        },
+        {
+          "category": "iban",
+          "text": "TR98 1072 9983 4765 5089 5678 39",
+          "start": 307,
+          "end": 339
+        },
+        {
+          "category": "phone_number",
+          "text": "0526 248 36 44",
+          "start": 358,
+          "end": 372
+        },
+        {
+          "category": "email_address",
+          "text": "alptug.gundogmus@burohukuk.example.org",
+          "start": 375,
+          "end": 413
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Zeynep Eryılmazer",
+          "start": 429,
+          "end": 446
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Alptuğ Gündoğmuş",
+          "start": 451,
+          "end": 467
+        }
+      ]
+    },
+    {
+      "id": "tr_board_2",
+      "lang": "tr",
+      "kind": "corporate",
+      "path": "tr_board_2.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Yalıboyu İnşaat Ltd. Şti.",
+          "start": 0,
+          "end": 25
+        },
+        {
+          "category": "date",
+          "text": "06.08.2025",
+          "start": 63,
+          "end": 73
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Karar No: 2025/6434",
+          "start": 84,
+          "end": 103
+        },
+        {
+          "category": "mersis_number",
+          "text": "0786447688872667",
+          "start": 115,
+          "end": 131
+        },
+        {
+          "category": "tax_number",
+          "text": "3803383380",
+          "start": 149,
+          "end": 159
+        },
+        {
+          "category": "address",
+          "text": "Gülbahar Mahallesi Papatya Sokak No: 70, Çankaya / Ankara",
+          "start": 176,
+          "end": 233
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Ömür Yıldırımhan",
+          "start": 266,
+          "end": 282
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Onur Özkeskin",
+          "start": 294,
+          "end": 307
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Şirin Gündoğmuş",
+          "start": 316,
+          "end": 331
+        },
+        {
+          "category": "money_amount",
+          "text": "52.276 TL",
+          "start": 359,
+          "end": 368
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Ömür Yıldırımhan",
+          "start": 435,
+          "end": 451
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Onur Özkeskin",
+          "start": 453,
+          "end": 466
+        }
+      ]
+    },
+    {
+      "id": "en_engagement_2",
+      "lang": "en",
+      "kind": "engagement_letter",
+      "path": "en_engagement_2.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "25 January 2024",
+          "start": 25,
+          "end": 40
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Mortlake",
+          "start": 46,
+          "end": 64
+        },
+        {
+          "category": "company_name",
+          "text": "Belvedere Pharmaceuticals Ltd.",
+          "start": 69,
+          "end": 99
+        },
+        {
+          "category": "address",
+          "text": "97 Quillon Lane, Cardiff CF10 1EP, United Kingdom",
+          "start": 109,
+          "end": 158
+        },
+        {
+          "category": "email_address",
+          "text": "cornelius.mortlake@sampletrust.example.com",
+          "start": 166,
+          "end": 208
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0260",
+          "start": 220,
+          "end": 236
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Mortlake",
+          "start": 243,
+          "end": 261
+        },
+        {
+          "category": "court_or_authority",
+          "text": "the High Court of Justice, Business and Property Courts of England and Wales",
+          "start": 364,
+          "end": 440
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Claim No: HC-2026/3613",
+          "start": 460,
+          "end": 482
+        },
+        {
+          "category": "money_amount",
+          "text": "£724,361",
+          "start": 524,
+          "end": 532
+        },
+        {
+          "category": "money_amount",
+          "text": "£622,931",
+          "start": 576,
+          "end": 584
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Margaret Ellersley",
+          "start": 643,
+          "end": 661
+        },
+        {
+          "category": "email_address",
+          "text": "margaret.ellersley@fictionlaw.example.com",
+          "start": 685,
+          "end": 726
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Margaret Ellersley",
+          "start": 747,
+          "end": 765
+        }
+      ]
+    },
+    {
+      "id": "en_spa_2",
+      "lang": "en",
+      "kind": "contract",
+      "path": "en_spa_2.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "4 November 2023",
+          "start": 52,
+          "end": 67
+        },
+        {
+          "category": "company_name",
+          "text": "Stanbridge Logistics LLC",
+          "start": 83,
+          "end": 107
+        },
+        {
+          "category": "address",
+          "text": "Floor 16, 131 Belvedere Court, Cardiff CF10 1EP, United Kingdom",
+          "start": 182,
+          "end": 245
+        },
+        {
+          "category": "company_name",
+          "text": "Belvedere Pharmaceuticals LLC",
+          "start": 271,
+          "end": 300
+        },
+        {
+          "category": "address",
+          "text": "Floor 10, 71 Belvedere Court, Manchester M1 3BN, United Kingdom",
+          "start": 332,
+          "end": 395
+        },
+        {
+          "category": "money_amount",
+          "text": "£245,379",
+          "start": 472,
+          "end": 480
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Margaret Ashcombe",
+          "start": 585,
+          "end": 602
+        },
+        {
+          "category": "email_address",
+          "text": "margaret.ashcombe@exampleco.example.com",
+          "start": 606,
+          "end": 645
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fitzgerald Wrenfield",
+          "start": 705,
+          "end": 725
+        },
+        {
+          "category": "email_address",
+          "text": "fitzgerald.wrenfield@sampletrust.example.com",
+          "start": 729,
+          "end": 773
+        },
+        {
+          "category": "court_or_authority",
+          "text": "the London Circuit Commercial Court",
+          "start": 827,
+          "end": 862
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Margaret Ashcombe",
+          "start": 905,
+          "end": 922
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fitzgerald Wrenfield",
+          "start": 963,
+          "end": 983
+        }
+      ]
+    },
+    {
+      "id": "en_witness_2",
+      "lang": "en",
+      "kind": "witness_statement",
+      "path": "en_witness_2.txt",
+      "labels": [
+        {
+          "category": "natural_person_name",
+          "text": "CORNELIUS HARROWGATE",
+          "start": 21,
+          "end": 41
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Claim No: QB-2023/3964",
+          "start": 53,
+          "end": 75
+        },
+        {
+          "category": "court_or_authority",
+          "text": "the Employment Tribunal sitting at Reading",
+          "start": 79,
+          "end": 121
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Harrowgate",
+          "start": 126,
+          "end": 146
+        },
+        {
+          "category": "address",
+          "text": "31 Cobblewell Street, Cardiff CF10 1EP, United Kingdom",
+          "start": 151,
+          "end": 205
+        },
+        {
+          "category": "date",
+          "text": "6 November 2024",
+          "start": 324,
+          "end": 339
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Adelaide Mortlake",
+          "start": 346,
+          "end": 363
+        },
+        {
+          "category": "company_name",
+          "text": "Quillon Analytics Limited",
+          "start": 382,
+          "end": 407
+        },
+        {
+          "category": "money_amount",
+          "text": "£344,830",
+          "start": 444,
+          "end": 452
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0629",
+          "start": 534,
+          "end": 550
+        },
+        {
+          "category": "email_address",
+          "text": "cornelius.harrowgate@sampletrust.example.com",
+          "start": 555,
+          "end": 599
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Harrowgate",
+          "start": 679,
+          "end": 699
+        },
+        {
+          "category": "date",
+          "text": "27 November 2023",
+          "start": 707,
+          "end": 723
+        }
+      ]
+    },
+    {
+      "id": "en_settlement_2",
+      "lang": "en",
+      "kind": "settlement",
+      "path": "en_settlement_2.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "7 November 2023",
+          "start": 28,
+          "end": 43
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Henrietta Ravenscroft",
+          "start": 58,
+          "end": 79
+        },
+        {
+          "category": "address",
+          "text": "117 Quillon Lane, Edinburgh EH2 2ER, United Kingdom",
+          "start": 83,
+          "end": 134
+        },
+        {
+          "category": "company_name",
+          "text": "Stanbridge Logistics LLC",
+          "start": 156,
+          "end": 180
+        },
+        {
+          "category": "address",
+          "text": "45 Marchmont Avenue, Suite 7, Bristol BS1 6QA, United Kingdom",
+          "start": 184,
+          "end": 245
+        },
+        {
+          "category": "money_amount",
+          "text": "£594,738",
+          "start": 318,
+          "end": 326
+        },
+        {
+          "category": "account_number",
+          "text": "account number 32755552",
+          "start": 415,
+          "end": 438
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Gwendolyn Harrowgate",
+          "start": 471,
+          "end": 491
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0398",
+          "start": 506,
+          "end": 522
+        },
+        {
+          "category": "email_address",
+          "text": "gwendolyn.harrowgate@fictionlaw.example.com",
+          "start": 526,
+          "end": 569
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Henrietta Ravenscroft",
+          "start": 660,
+          "end": 681
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Gwendolyn Harrowgate",
+          "start": 683,
+          "end": 703
+        }
+      ]
+    },
+    {
+      "id": "en_demand_2",
+      "lang": "en",
+      "kind": "demand_letter",
+      "path": "en_demand_2.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "8 March 2025",
+          "start": 21,
+          "end": 33
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Margaret Harrowgate",
+          "start": 39,
+          "end": 58
+        },
+        {
+          "category": "address",
+          "text": "49 Cobblewell Street, Edinburgh EH2 2ER, United Kingdom",
+          "start": 63,
+          "end": 118
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Harrowgate",
+          "start": 129,
+          "end": 139
+        },
+        {
+          "category": "company_name",
+          "text": "Stanbridge Logistics Inc.",
+          "start": 153,
+          "end": 178
+        },
+        {
+          "category": "money_amount",
+          "text": "£225,398",
+          "start": 220,
+          "end": 228
+        },
+        {
+          "category": "date",
+          "text": "19 November 2026",
+          "start": 237,
+          "end": 253
+        },
+        {
+          "category": "court_or_authority",
+          "text": "the High Court of Justice, Business and Property Courts of England and Wales",
+          "start": 340,
+          "end": 416
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Barnaby Ravenscroft",
+          "start": 455,
+          "end": 474
+        },
+        {
+          "category": "email_address",
+          "text": "barnaby.ravenscroft@fictionlaw.example.com",
+          "start": 478,
+          "end": 520
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0353",
+          "start": 524,
+          "end": 540
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Barnaby Ravenscroft",
+          "start": 562,
+          "end": 581
+        }
+      ]
+    },
+    {
+      "id": "en_board_2",
+      "lang": "en",
+      "kind": "corporate",
+      "path": "en_board_2.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Harrowgate Maritime Limited",
+          "start": 0,
+          "end": 27
+        },
+        {
+          "category": "date",
+          "text": "1 March 2025",
+          "start": 84,
+          "end": 96
+        },
+        {
+          "category": "address",
+          "text": "77 Cobblewell Street, Bristol BS1 6QA, United Kingdom",
+          "start": 100,
+          "end": 153
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Priscilla Harrowgate",
+          "start": 166,
+          "end": 186
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Harrowgate",
+          "start": 197,
+          "end": 217
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Desmond Pemberton",
+          "start": 231,
+          "end": 248
+        },
+        {
+          "category": "money_amount",
+          "text": "£855,401",
+          "start": 334,
+          "end": 342
+        },
+        {
+          "category": "company_name",
+          "text": "Fairweather Robotics Inc.",
+          "start": 363,
+          "end": 388
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Cornelius Harrowgate",
+          "start": 414,
+          "end": 434
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Priscilla Harrowgate",
+          "start": 483,
+          "end": 503
+        }
+      ]
+    },
+    {
+      "id": "en_employment_2",
+      "lang": "en",
+      "kind": "employment",
+      "path": "en_employment_2.txt",
+      "labels": [
+        {
+          "category": "company_name",
+          "text": "Fairweather Robotics Limited",
+          "start": 33,
+          "end": 61
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Adelaide Harrowgate",
+          "start": 85,
+          "end": 104
+        },
+        {
+          "category": "address",
+          "text": "10 Cobblewell Street, Edinburgh EH2 2ER, United Kingdom",
+          "start": 108,
+          "end": 163
+        },
+        {
+          "category": "date",
+          "text": "14 January 2024",
+          "start": 194,
+          "end": 209
+        },
+        {
+          "category": "money_amount",
+          "text": "£430,574",
+          "start": 218,
+          "end": 226
+        },
+        {
+          "category": "passport_number",
+          "text": "U39508484",
+          "start": 291,
+          "end": 300
+        },
+        {
+          "category": "email_address",
+          "text": "adelaide.harrowgate@exampleco.example.com",
+          "start": 317,
+          "end": 358
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0798",
+          "start": 367,
+          "end": 383
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fitzgerald Pemberton",
+          "start": 421,
+          "end": 441
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Adelaide Harrowgate",
+          "start": 471,
+          "end": 490
+        }
+      ]
+    },
+    {
+      "id": "en_dpa_2",
+      "lang": "en",
+      "kind": "data_processing",
+      "path": "en_dpa_2.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "26 September 2025",
+          "start": 61,
+          "end": 78
+        },
+        {
+          "category": "company_name",
+          "text": "Crowhurst Foods Limited",
+          "start": 101,
+          "end": 124
+        },
+        {
+          "category": "address",
+          "text": "151 Marchmont Avenue, Suite 1, Cardiff CF10 1EP, United Kingdom",
+          "start": 126,
+          "end": 189
+        },
+        {
+          "category": "company_name",
+          "text": "Fairweather Robotics Ltd.",
+          "start": 201,
+          "end": 226
+        },
+        {
+          "category": "address",
+          "text": "111 Quillon Lane, Edinburgh EH2 2ER, United Kingdom",
+          "start": 228,
+          "end": 279
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Priscilla Wrenfield",
+          "start": 319,
+          "end": 338
+        },
+        {
+          "category": "email_address",
+          "text": "priscilla.wrenfield@exampleco.example.com",
+          "start": 340,
+          "end": 381
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Priscilla Mortlake",
+          "start": 419,
+          "end": 437
+        },
+        {
+          "category": "email_address",
+          "text": "priscilla.mortlake@fictionlaw.example.com",
+          "start": 439,
+          "end": 480
+        },
+        {
+          "category": "money_amount",
+          "text": "£811,233",
+          "start": 617,
+          "end": 625
+        }
+      ]
+    },
+    {
+      "id": "en_hold_2",
+      "lang": "en",
+      "kind": "litigation_hold",
+      "path": "en_hold_2.txt",
+      "labels": [
+        {
+          "category": "natural_person_name",
+          "text": "Montgomery Corrigan",
+          "start": 60,
+          "end": 79
+        },
+        {
+          "category": "date",
+          "text": "23 January 2025",
+          "start": 103,
+          "end": 118
+        },
+        {
+          "category": "case_or_investigation_number",
+          "text": "Claim No: CL-2024/1961",
+          "start": 127,
+          "end": 149
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Barnaby Wynterbourne",
+          "start": 168,
+          "end": 188
+        },
+        {
+          "category": "email_address",
+          "text": "barnaby.wynterbourne@fictionlaw.example.com",
+          "start": 190,
+          "end": 233
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Fitzgerald Fairweather",
+          "start": 239,
+          "end": 261
+        },
+        {
+          "category": "email_address",
+          "text": "fitzgerald.fairweather@fictionlaw.example.com",
+          "start": 263,
+          "end": 308
+        },
+        {
+          "category": "company_name",
+          "text": "Crowhurst Foods Limited",
+          "start": 371,
+          "end": 394
+        },
+        {
+          "category": "money_amount",
+          "text": "£885,731",
+          "start": 438,
+          "end": 446
+        },
+        {
+          "category": "date",
+          "text": "20 January 2024",
+          "start": 455,
+          "end": 470
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Montgomery Corrigan",
+          "start": 505,
+          "end": 524
+        },
+        {
+          "category": "phone_number",
+          "text": "+44 20 7946 0938",
+          "start": 528,
+          "end": 544
+        }
+      ]
+    },
+    {
+      "id": "en_nda_2",
+      "lang": "en",
+      "kind": "nda",
+      "path": "en_nda_2.txt",
+      "labels": [
+        {
+          "category": "date",
+          "text": "4 June 2023",
+          "start": 39,
+          "end": 50
+        },
+        {
+          "category": "company_name",
+          "text": "Fairweather Robotics Inc.",
+          "start": 61,
+          "end": 86
+        },
+        {
+          "category": "address",
+          "text": "87 Anselm Road, Manchester M1 3BN, United Kingdom",
+          "start": 106,
+          "end": 155
+        },
+        {
+          "category": "company_name",
+          "text": "Harrowgate Maritime LLC",
+          "start": 165,
+          "end": 188
+        },
+        {
+          "category": "address",
+          "text": "118 Marchmont Avenue, Suite 17, Cardiff CF10 1EP, United Kingdom",
+          "start": 208,
+          "end": 272
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Percival Crowhurst",
+          "start": 301,
+          "end": 319
+        },
+        {
+          "category": "email_address",
+          "text": "percival.crowhurst@exampleco.example.com",
+          "start": 321,
+          "end": 361
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Gwendolyn Fothergill",
+          "start": 367,
+          "end": 387
+        },
+        {
+          "category": "email_address",
+          "text": "gwendolyn.fothergill@exampleco.example.com",
+          "start": 389,
+          "end": 431
+        },
+        {
+          "category": "money_amount",
+          "text": "£678,487",
+          "start": 568,
+          "end": 576
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Percival Crowhurst",
+          "start": 589,
+          "end": 607
+        },
+        {
+          "category": "natural_person_name",
+          "text": "Gwendolyn Fothergill",
+          "start": 612,
+          "end": 632
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,506 @@
+{% extends "base.html" %}
+{% set active_nav = 'matters' %}
+{% block title %}Batch review · {{ matter_name }} - Legal Redact{% endblock %}
+{% block brand_subtitle %}Matter batch review{% endblock %}
+{% block styles %}
+    <style>
+        /* Batch review in the shared design language (workstation.css): a
+           finding is bracketed (.mark) wherever it is shown, decisions are
+           secondary buttons, and the page's one filled button is the export.
+           Every state this page shows -- what a document needs next, whether
+           its export gate passes -- is read off /api/matter/<id>/batch, never
+           worked out here. */
+        .page-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+        .step-head { display: flex; align-items: baseline; gap: 12px; }
+        .step-head .kicker { margin: 0; }
+        .batch-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .view-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .view-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 36px;
+            padding: 0 13px;
+            border: 1px solid var(--color-border-strong);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface);
+            color: var(--color-text);
+            box-shadow: none;
+            font-size: 13.5px;
+            font-weight: 500;
+        }
+        .view-chip .chip-count { color: var(--color-text-secondary); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+        html body .view-chip[aria-pressed="true"] {
+            border-color: var(--color-accent);
+            background: var(--color-accent-soft);
+            color: var(--color-accent);
+        }
+        .view-chip[aria-pressed="true"]::before,
+        .view-chip[aria-pressed="true"]::after { margin: 0 -3px; font-family: var(--font-mono); font-weight: 500; }
+        .view-chip[aria-pressed="true"]::before { content: "["; content: "[" / ""; }
+        .view-chip[aria-pressed="true"]::after { content: "]"; content: "]" / ""; }
+        .view-chip[aria-pressed="true"] .chip-count { color: var(--color-accent); }
+
+        .group-list { list-style: none; margin: 0; padding: 0; }
+        .batch-group { border-bottom: 1px solid var(--color-border); }
+        .batch-group:last-child { border-bottom: 0; }
+        .group-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 14px 20px;
+            padding: 14px 18px;
+        }
+        .group-text { font-family: var(--font-document); font-size: 17px; line-height: 1.45; overflow-wrap: anywhere; }
+        .group-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; color: var(--color-text-secondary); font-size: 13px; }
+        .group-actions, .doc-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+        html body .group-actions button, html body .doc-actions button, html body .doc-actions .button-link {
+            min-height: var(--control-height-sm);
+            padding: 0 11px;
+            font-size: 13px;
+        }
+        html body .doc-actions .button-link { display: inline-flex; align-items: center; text-decoration: none; }
+        html body button.retain-action { border-color: #d8aaa7; color: var(--color-danger); }
+        .group-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        html body .group-toggle { min-height: 0; padding: 0; border: 0; background: transparent; box-shadow: none; }
+        html body .group-toggle:hover { background: transparent; color: var(--color-text); }
+        .group-toggle::before { content: "+"; font-family: var(--font-mono); color: var(--color-accent); }
+        .group-toggle[aria-expanded="true"]::before { content: "−"; }
+        .group-docs { margin: 0 18px 14px; border-top: 1px solid var(--color-border); }
+        .group-docs[hidden] { display: none; }
+        .group-doc {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) auto auto;
+            align-items: center;
+            gap: 8px 16px;
+            padding: 11px 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+        .group-doc:last-child { border-bottom: 0; }
+        .group-doc-context { margin-top: 3px; color: var(--color-text-secondary); font-family: var(--font-document); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+
+        html body .app-shell .badge.decision-undecided { background: var(--color-warning-soft); color: var(--color-warning); }
+        html body .app-shell .badge.decision-approved { background: var(--color-accent-soft); color: var(--color-accent); }
+        html body .app-shell .badge.decision-added_by_reviewer { background: var(--color-accent-soft); color: var(--color-accent); }
+        html body .app-shell .badge.decision-dismissed { background: var(--color-surface-soft); color: var(--color-text-secondary); }
+        html body .app-shell .badge.decision-retained { background: var(--color-mark-kept); color: var(--color-text); }
+        html body .app-shell .badge.decision-signed_off,
+        html body .app-shell .badge.decision-locked_approved,
+        html body .app-shell .badge.decision-locked { background: var(--color-success-soft); color: var(--color-success); }
+        html body .app-shell .badge.decision-mixed,
+        html body .app-shell .badge.decision-partly_decided { background: var(--color-info-soft); color: var(--color-info); }
+        html body .app-shell .badge.step-export_ready { background: var(--color-success-soft); color: var(--color-success); }
+        html body .app-shell .badge.step-sign_off { background: var(--color-accent-soft); color: var(--color-accent); }
+        html body .app-shell .badge.step-decide_findings,
+        html body .app-shell .badge.step-open_studio { background: var(--color-warning-soft); color: var(--color-warning); }
+        html body .app-shell .badge.step-no_export { background: var(--color-surface-soft); color: var(--color-text-secondary); }
+
+        .empty-row { padding: 22px 18px; color: var(--color-text-secondary); }
+        .export-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+        .export-row select { width: auto; min-width: 200px; }
+        .export-note { margin: 12px 0 0; color: var(--color-text-secondary); font-size: 13.5px; }
+        .batch-status { min-height: 1.4em; margin: 0; color: var(--color-text-secondary); font-size: 13.5px; }
+        .batch-status.is-error { color: var(--color-danger); }
+        @media (max-width: 980px) {
+            .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .group-row, .group-doc { grid-template-columns: 1fr; }
+            .group-actions, .doc-actions { justify-content: flex-start; }
+        }
+    </style>
+{% endblock %}
+{% block topbar %}
+            <div class="shell-banner"><strong>Batch review</strong><div class="trust-strip"><span class="trust-pill">Decide once per matter</span><span class="trust-pill">Sign off per document</span><span class="trust-pill">Export gate per document</span></div></div>
+            <header class="page-header">
+                <p class="kicker"><a href="/matter/{{ matter_id }}">{{ matter_name }}</a></p>
+                <h1 id="batchTitle">Batch review</h1>
+                <p class="page-lede">Decide each name, number and reference once for every document in this matter. Each document is still signed off on its own, and only a signed-off document's reviewed copy is exported.</p>
+            </header>
+{% endblock %}
+{% block content %}
+            <main class="content">
+                <div class="figures">
+                    <div class="figure"><div id="undecidedCount" class="figure-value">0</div><div class="figure-label">Findings still undecided</div></div>
+                    <div class="figure"><div id="groupCount" class="figure-value">0</div><div class="figure-label">Distinct findings in the matter</div></div>
+                    <div class="figure"><div id="signedOffCount" class="figure-value">0</div><div class="figure-label">Documents signed off</div></div>
+                    <div class="figure"><div id="readyCount" class="figure-value">0</div><div class="figure-label">Reviewed copies ready</div></div>
+                </div>
+                <p id="batchStatus" class="batch-status" role="status" aria-live="polite"></p>
+
+                <section aria-labelledby="decideHeading">
+                    <div class="section-head">
+                        <div>
+                            <div class="step-head"><span class="kicker">1</span><h2 id="decideHeading">Decide across the matter</h2></div>
+                            <p class="section-lede">A decision on a row fills in every document where that finding is still undecided. A document already decided keeps its decision; open a row to decide one document differently.</p>
+                        </div>
+                    </div>
+                    <div class="batch-toolbar">
+                        <div class="view-chips" role="group" aria-label="Finding views">
+                            <button class="view-chip" type="button" data-view="undecided" aria-pressed="true">Undecided <span class="chip-count" id="chipUndecided"></span></button>
+                            <button class="view-chip" type="button" data-view="all" aria-pressed="false">All <span class="chip-count" id="chipAll"></span></button>
+                        </div>
+                    </div>
+                    <div class="table-wrap"><ul id="groupList" class="group-list" aria-label="Findings across the matter"><li class="empty-row">Loading findings…</li></ul></div>
+                </section>
+
+                <section aria-labelledby="signOffHeading">
+                    <div class="section-head">
+                        <div>
+                            <div class="step-head"><span class="kicker">2</span><h2 id="signOffHeading">Sign off each document</h2></div>
+                            <p class="section-lede">Signing off marks redaction complete and records your approval for that one document. It is refused while any of its findings is undecided, its OCR is unresolved or a PDF box is pending.</p>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead><tr><th style="width: 34%">Document</th><th style="width: 14%">Findings</th><th>Next step</th><th style="width: 22%"><span class="sr-only">Action</span></th></tr></thead>
+                            <tbody id="documentRows"><tr><td colspan="4">Loading documents…</td></tr></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section aria-labelledby="exportHeading">
+                    <div class="section-head">
+                        <div>
+                            <div class="step-head"><span class="kicker">3</span><h2 id="exportHeading">Export reviewed copies</h2></div>
+                            <p class="section-lede">One archive holding the reviewed copy of every document whose own export gate passes. A document that is not ready is left out, never built around.</p>
+                        </div>
+                    </div>
+                    <div class="card card-pad">
+                        <div class="export-row">
+                            <button id="exportButton" class="primary" type="button" disabled>Download reviewed copies</button>
+                            <label class="sr-only" for="exportStyle">DOCX redaction style</label>
+                            <select id="exportStyle">
+                                <option value="placeholder">DOCX: placeholders</option>
+                                <option value="mask">DOCX: mask</option>
+                            </select>
+                        </div>
+                        <p id="exportNote" class="export-note"></p>
+                    </div>
+                </section>
+            </main>
+{% endblock %}
+{% block after_shell %}
+    <script src="{{ url_for('static', filename='escape.js') }}"></script>
+    <script>
+        const matterId = Number({{ matter_id }});
+        let batch = null;
+        let view = 'undecided';
+        const expanded = new Set();
+
+        const DECISIONS = [
+            { action: 'approve', label: 'Approve', status: 'approved', cls: 'approve' },
+            { action: 'dismiss', label: 'Not sensitive', status: 'dismissed', cls: '' },
+            { action: 'retain', label: 'Keep unredacted', status: 'retained', cls: 'retain-action' },
+        ];
+        const DECISION_LABELS = {
+            undecided: 'Undecided',
+            partly_decided: 'Partly decided',
+            approved: 'Approved',
+            added_by_reviewer: 'Added by reviewer',
+            dismissed: 'Not sensitive',
+            retained: 'Kept unredacted',
+            mixed: 'Mixed',
+            locked: 'Locked',
+            signed_off: 'Signed off',
+            locked_approved: 'Locked (approved)',
+        };
+        const STEP_LABELS = {
+            decide_findings: 'Decide findings',
+            open_studio: 'Needs the Studio',
+            sign_off: 'Ready to sign off',
+            export_ready: 'Signed off · ready',
+            no_export: 'Signed off · no export',
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-view]').forEach((chip) => chip.addEventListener('click', () => {
+                view = chip.dataset.view;
+                document.querySelectorAll('[data-view]').forEach((node) => node.setAttribute('aria-pressed', String(node === chip)));
+                renderGroups();
+            }));
+            document.getElementById('groupList').addEventListener('click', onGroupClick);
+            document.getElementById('documentRows').addEventListener('click', onDocumentClick);
+            document.getElementById('exportButton').addEventListener('click', exportBatch);
+            loadBatch();
+        });
+
+        function setStatus(message, isError) {
+            const node = document.getElementById('batchStatus');
+            node.textContent = message || '';
+            node.classList.toggle('is-error', Boolean(isError));
+        }
+
+        async function loadBatch() {
+            const response = await fetch(`/api/matter/${matterId}/batch`);
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                setStatus(data.error || 'The batch could not be loaded.', true);
+                return;
+            }
+            batch = data;
+            const summary = data.summary || {};
+            document.getElementById('undecidedCount').textContent = Number(summary.undecided_finding_count || 0);
+            document.getElementById('groupCount').textContent = Number(summary.group_count || 0);
+            document.getElementById('signedOffCount').textContent = `${Number(summary.signed_off_count || 0)} / ${Number(summary.document_count || 0)}`;
+            document.getElementById('readyCount').textContent = Number(summary.export_ready_count || 0);
+            document.getElementById('chipUndecided').textContent = Number(summary.undecided_group_count || 0);
+            document.getElementById('chipAll').textContent = Number(summary.group_count || 0);
+            renderGroups();
+            renderDocuments();
+            renderExport();
+        }
+
+        function decisionBadge(decision) {
+            return `<span class="badge decision-${escapeHtml(decision)}">${escapeHtml(DECISION_LABELS[decision] || decision)}</span>`;
+        }
+
+        function markClass(decision) {
+            if (decision === 'approved' || decision === 'added_by_reviewer') return 'mark mark--approved';
+            if (decision === 'dismissed') return 'mark mark--dismissed';
+            if (decision === 'retained') return 'mark mark--retained';
+            return 'mark';
+        }
+
+        function plural(count, noun) {
+            return `${count} ${noun}${count === 1 ? '' : 's'}`;
+        }
+
+        function renderGroups() {
+            const list = document.getElementById('groupList');
+            const groups = (batch.groups || []).filter((group) => view === 'all' || group.undecided);
+            if (!groups.length) {
+                const stillUndecided = Number((batch.summary || {}).undecided_finding_count || 0);
+                let message = 'No findings were detected in this matter’s documents.';
+                if (stillUndecided) {
+                    message = `${plural(stillUndecided, 'finding')} still undecided in locked documents. Reopen them in the Studio, below.`;
+                } else if ((batch.groups || []).length) {
+                    message = 'Every finding in this matter has a decision. Sign each document off below.';
+                }
+                list.innerHTML = `<li class="empty-row">${escapeHtml(message)}</li>`;
+                return;
+            }
+            list.innerHTML = groups.map((group) => {
+                const key = escapeHtml(group.key);
+                const open = expanded.has(group.key);
+                const docCount = group.documents.length;
+                const actions = [];
+                if (group.undecided) {
+                    DECISIONS.forEach((decision) => {
+                        actions.push(`<button type="button" class="${decision.cls}" data-group-action="${decision.action}" data-group-key="${key}">${decision.label}</button>`);
+                    });
+                }
+                if (group.undecided < group.open_occurrences) {
+                    actions.push(`<button type="button" data-group-action="pending" data-group-key="${key}">Undo</button>`);
+                }
+                return `
+                    <li class="batch-group">
+                        <div class="group-row">
+                            <div>
+                                <div class="group-text"><span class="${markClass(group.decision)}">${escapeHtml(group.text || '(no text)')}</span></div>
+                                <button class="group-toggle" type="button" aria-expanded="${open}" aria-controls="docs-${key}" data-toggle-key="${key}">${plural(docCount, 'document')} · ${plural(group.occurrences, 'occurrence')}</button>
+                            </div>
+                            <div class="group-meta">
+                                <span>${escapeHtml(group.category_label)}</span>
+                                <span class="badge risk-${escapeHtml(group.risk)}">${escapeHtml(group.risk)}</span>
+                                ${decisionBadge(group.decision)}
+                                ${group.undecided && group.undecided < group.open_occurrences ? `<span>${group.undecided} undecided</span>` : ''}
+                                ${group.locked_documents ? `<span>${plural(Number(group.locked_documents), 'locked document')}</span>` : ''}
+                            </div>
+                            <div class="group-actions" aria-label="Decide in every document">${actions.join('')}</div>
+                        </div>
+                        <div class="group-docs" id="docs-${key}" ${open ? '' : 'hidden'}>
+                            ${group.documents.map((doc) => groupDocumentRow(group, doc)).join('')}
+                        </div>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        function groupDocumentRow(group, doc) {
+            const key = escapeHtml(group.key);
+            const docId = Number(doc.document_id);
+            if (doc.locked) {
+                return `
+                    <div class="group-doc">
+                        <div>
+                            <div class="file-name">${escapeHtml(doc.filename)}${doc.finding_ids.length > 1 ? ` · ${doc.finding_ids.length} times` : ''}</div>
+                            <div class="row-meta">${doc.signed_off ? 'Signed off' : 'Its review is approved'}, so the batch leaves it as it is. Reopen it in its own review to change it.</div>
+                        </div>
+                        <div>${decisionBadge(doc.decision)} ${decisionBadge(doc.signed_off ? 'signed_off' : 'locked_approved')}</div>
+                        <div class="doc-actions" aria-label="Signed off"><a class="button-link" href="/studio/${docId}">Reopen in Studio</a></div>
+                    </div>
+                `;
+            }
+            const buttons = DECISIONS
+                .filter((decision) => doc.decision !== decision.status)
+                .map((decision) => `<button type="button" class="${decision.cls}" data-doc-action="${decision.action}" data-group-key="${key}" data-document-id="${docId}">${decision.label}</button>`);
+            if (doc.decision !== 'undecided') {
+                buttons.unshift(`<button type="button" data-doc-action="pending" data-group-key="${key}" data-document-id="${docId}">Undo</button>`);
+            }
+            return `
+                <div class="group-doc">
+                    <div>
+                        <div class="file-name">${escapeHtml(doc.filename)}${doc.finding_ids.length > 1 ? ` · ${doc.finding_ids.length} times` : ''}</div>
+                        ${doc.context ? `<div class="group-doc-context">${escapeHtml(doc.context)}</div>` : ''}
+                    </div>
+                    <div>${decisionBadge(doc.decision)}</div>
+                    <div class="doc-actions" aria-label="Decide in this document only">${buttons.join('')}<a class="button-link" href="/studio/${docId}">Studio</a></div>
+                </div>
+            `;
+        }
+
+        function renderDocuments() {
+            const rows = batch.documents || [];
+            document.getElementById('documentRows').innerHTML = rows.length ? rows.map((doc) => {
+                let action = '';
+                if (doc.next_step === 'sign_off') {
+                    action = `<button type="button" data-sign-off="${Number(doc.id)}">Sign off</button>`;
+                } else if (doc.next_step !== 'export_ready' && doc.next_step !== 'no_export') {
+                    action = `<a class="button-link" href="/studio/${Number(doc.id)}">Open in Studio</a>`;
+                }
+                return `
+                    <tr>
+                        <td><div class="row-title">${escapeHtml(doc.title || doc.filename)}</div><div class="file-name">${escapeHtml(doc.filename)}</div></td>
+                        <td>${Number(doc.finding_count)}${doc.undecided_count ? `<div class="row-meta">${Number(doc.undecided_count)} undecided</div>` : ''}</td>
+                        <td><span class="badge step-${escapeHtml(doc.next_step)}">${escapeHtml(STEP_LABELS[doc.next_step] || doc.next_step)}</span><div class="row-meta">${escapeHtml(doc.next_step_reason)}</div></td>
+                        <td><div class="doc-actions">${action}</div></td>
+                    </tr>
+                `;
+            }).join('') : '<tr><td colspan="4">No documents in this matter.</td></tr>';
+        }
+
+        function renderExport() {
+            const summary = batch.summary || {};
+            const ready = Number(summary.export_ready_count || 0);
+            const total = Number(summary.document_count || 0);
+            const button = document.getElementById('exportButton');
+            button.disabled = !ready;
+            button.textContent = ready ? `Download reviewed copies (${ready})` : 'Download reviewed copies';
+            document.getElementById('exportNote').textContent = ready
+                ? `${ready} of ${total} documents will be in the archive. ${total - ready ? `${total - ready} not ready yet will be left out.` : ''}`
+                : 'No document is ready yet: decide its findings and sign it off first.';
+        }
+
+        function confirmDecision(action, count, documents, scope) {
+            const subject = scope === 'document'
+                ? `this finding in this one document`
+                : `${plural(count, 'undecided finding')} across ${plural(documents, 'document')}`;
+            if (action === 'retain') {
+                return window.confirm(`Keep ${subject} UNREDACTED?\n\nThis records that the text is a real identifier and you are choosing to leave it in the exported documents. It keeps external LLM release blocked, and the decision is written to the audit log.`);
+            }
+            if (action === 'dismiss' && scope !== 'document') {
+                return window.confirm(`Mark ${subject} as NOT SENSITIVE (false positive)?\n\nThe text is left in every one of those documents and stops counting against release.`);
+            }
+            if (action === 'pending' && scope !== 'document') {
+                return window.confirm('Undo every decision on this finding across the matter? Each document returns to undecided for it, including any you decided one at a time. Signed-off documents are left as they are.');
+            }
+            return true;
+        }
+
+        async function decide(groupKey, action, documentId) {
+            const group = (batch.groups || []).find((item) => item.key === groupKey);
+            if (!group) return;
+            const scope = documentId ? 'document' : 'matter';
+            const openDocs = group.documents.filter((doc) => !doc.locked);
+            const affectedDocs = openDocs.filter((doc) => doc.decision === 'undecided' || doc.decision === 'mixed').length;
+            if (!confirmDecision(action, group.undecided, affectedDocs || openDocs.length, scope)) return;
+            const body = { group_key: groupKey, action };
+            if (documentId) body.document_id = documentId;
+            const response = await fetch(`/api/matter/${matterId}/batch/decide`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                setStatus(data.error || 'The decision was not recorded.', true);
+                return;
+            }
+            const kept = Number(data.kept || 0);
+            const lockedDocs = Number(data.locked_documents || 0);
+            setStatus(`${plural(Number(data.updated || 0), 'finding')} in ${plural(Number(data.documents || 0), 'document')} updated.${kept && scope === 'matter' ? ` ${kept} already decided kept ${kept === 1 ? 'its' : 'their'} decision.` : ''}${lockedDocs ? ` ${plural(lockedDocs, 'locked document')} left unchanged.` : ''}`);
+            await loadBatch();
+        }
+
+        function onGroupClick(event) {
+            const toggle = event.target.closest('[data-toggle-key]');
+            if (toggle) {
+                const key = toggle.dataset.toggleKey;
+                if (expanded.has(key)) expanded.delete(key); else expanded.add(key);
+                const open = expanded.has(key);
+                toggle.setAttribute('aria-expanded', String(open));
+                document.getElementById(`docs-${key}`).hidden = !open;
+                return;
+            }
+            const groupButton = event.target.closest('[data-group-action]');
+            if (groupButton) {
+                decide(groupButton.dataset.groupKey, groupButton.dataset.groupAction, null);
+                return;
+            }
+            const docButton = event.target.closest('[data-doc-action]');
+            if (docButton) {
+                decide(docButton.dataset.groupKey, docButton.dataset.docAction, Number(docButton.dataset.documentId));
+            }
+        }
+
+        async function onDocumentClick(event) {
+            const button = event.target.closest('[data-sign-off]');
+            if (!button) return;
+            const docId = Number(button.dataset.signOff);
+            const doc = (batch.documents || []).find((item) => item.id === docId);
+            if (!doc) return;
+            if (!window.confirm(`Sign off ${doc.filename}?\n\nThis marks its redaction complete and records your human-review approval for this one document, which unlocks its reviewed copy.`)) return;
+            const steps = doc.redaction_completed ? ['approve'] : ['mark_redacted', 'approve'];
+            for (const action of steps) {
+                const response = await fetch(`/api/document/${docId}/review`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action }),
+                });
+                if (!response.ok) {
+                    const data = await response.json().catch(() => ({}));
+                    setStatus(data.error || 'The document could not be signed off.', true);
+                    await loadBatch();
+                    return;
+                }
+            }
+            setStatus(`${doc.filename} signed off.`);
+            await loadBatch();
+        }
+
+        async function exportBatch() {
+            const style = document.getElementById('exportStyle').value;
+            const response = await fetch(`/api/matter/${matterId}/redacted-export?style=${encodeURIComponent(style)}`);
+            if (!response.ok) {
+                const data = await response.json().catch(() => ({}));
+                setStatus(data.error || 'The reviewed copies could not be exported.', true);
+                return;
+            }
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `matter_${matterId}_reviewed_copies.zip`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+            const exported = response.headers.get('X-Exported-Count');
+            const heldBack = Number(response.headers.get('X-Held-Back-Count') || 0);
+            setStatus(`${exported} reviewed ${Number(exported) === 1 ? 'copy' : 'copies'} exported.${heldBack ? ` ${heldBack} not ready ${heldBack === 1 ? 'was' : 'were'} left out.` : ''}`);
+            await loadBatch();
+        }
+
+        async function logout() { await fetch('/logout', { method: 'POST' }); window.location.href = '/login'; }
+    </script>
+{% endblock %}

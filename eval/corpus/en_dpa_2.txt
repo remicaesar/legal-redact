@@ -1,0 +1,12 @@
+DATA PROCESSING AGREEMENT
+
+This Agreement is entered into on 26 September 2025 between:
+
+Controller: Crowhurst Foods Limited, 151 Marchmont Avenue, Suite 1, Cardiff CF10 1EP, United Kingdom
+Processor: Fairweather Robotics Ltd., 111 Quillon Lane, Edinburgh EH2 2ER, United Kingdom
+
+Controller's Data Protection Officer: Priscilla Wrenfield, priscilla.wrenfield@exampleco.example.com
+Processor's Data Protection Officer: Priscilla Mortlake, priscilla.mortlake@fictionlaw.example.com
+
+The Processor shall notify the Controller of any personal data breach without undue delay.
+Liability under this Agreement is capped at £811,233.

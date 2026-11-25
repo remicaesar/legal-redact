@@ -1,0 +1,12 @@
+DATA PROCESSING AGREEMENT
+
+This Agreement is entered into on 25 January 2026 between:
+
+Controller: Fairweather Robotics Ltd., 146 Cobblewell Street, Bristol BS1 6QA, United Kingdom
+Processor: Ravenscroft Media PLC, Unit 1, 177 Harrow Road, Leeds LS1 4AP, United Kingdom
+
+Controller's Data Protection Officer: Cornelius Harrowgate, cornelius.harrowgate@sampletrust.example.com
+Processor's Data Protection Officer: Rosalind Corrigan, rosalind.corrigan@sampletrust.example.com
+
+The Processor shall notify the Controller of any personal data breach without undue delay.
+Liability under this Agreement is capped at £705,609.

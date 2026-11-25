@@ -1,0 +1,142 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # poppler is not a requirement of the app -- extraction.extract_pdf_text
+      # falls back to pypdf without it -- but the held-out measurement reports
+      # BOTH branches, and it cannot report the poppler one on a runner that has
+      # no pdftotext. Without this the published page is only reproducible on a
+      # machine that happens to have poppler, which is how this step's first run
+      # failed.
+      - name: Install poppler for the pdf-poppler measurement arm
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends poppler-utils
+
+      # -W error::ResourceWarning: unittest does not fail on warnings, so an
+      # unclosed handle on a redacted export used to hide inside green runs.
+      # Now it is a failure with a traceback to the opener.
+      # LEGAL_REDACT_REQUIRE_DOCKER: the runner has Docker, so the build-context
+      # test (no local database reaches ./start.sh's image build) must run here
+      # rather than skip the way it does on a machine without an engine.
+      - name: Unit tests
+        env:
+          LEGAL_REDACT_REQUIRE_DOCKER: "1"
+        run: python -W error::ResourceWarning -m unittest discover -s tests -t .
+
+      # The accuracy audit is not a unit test and does not fail on its own exit
+      # code, so the gate is asserted here instead. Both counts must be 0:
+      # false_low_count only fires when computed risk is exactly Low, so a
+      # document expected High that computes Medium is invisible to it —
+      # risk_shortfall_count is what catches a downgrade between any two levels.
+      # Recall is asserted too, because a rule that stops detecting a category
+      # entirely can leave both counts at 0.
+      - name: Accuracy audit gate
+        run: |
+          python accuracy_audit.py --labels gold/gold_labels.example.json
+          python - <<'PY'
+          import json, sys
+
+          report = json.load(open("accuracy_report.json"))
+          metrics = report["metrics"]
+          failures = []
+
+          for name in ("false_low_count", "risk_shortfall_count"):
+              if name not in metrics:
+                  failures.append(f"{name} missing from the report — the gate is not being computed")
+              elif metrics[name] != 0:
+                  failures.append(f"{name} is {metrics[name]}, must be 0")
+
+          if metrics.get("false_negative_count", -1) != 0:
+              failures.append(f"false_negative_count is {metrics.get('false_negative_count')}, must be 0")
+
+          post_ocr = metrics.get("post_ocr") or {}
+          for name in ("false_low_count", "risk_shortfall_count"):
+              if post_ocr.get(name, 0) != 0:
+                  failures.append(f"post_ocr {name} is {post_ocr[name]}, must be 0")
+
+          print(
+              f"recall={metrics.get('recall')} precision={metrics.get('precision')} "
+              f"labels={metrics.get('total_gold_labels')} "
+              f"false_low={metrics.get('false_low_count')} "
+              f"risk_shortfall={metrics.get('risk_shortfall_count')}"
+          )
+
+          if failures:
+              print("\nAccuracy gate failed:", file=sys.stderr)
+              for line in failures:
+                  print(f"  - {line}", file=sys.stderr)
+              sys.exit(1)
+
+          print("Accuracy gate passed.")
+          PY
+
+      # The gold set is 36 synthetic documents whose labels and whose detection
+      # rules were edited in the same commits, so its recall is 1.000 by
+      # construction and it cannot produce a false negative. Green above means the
+      # rules still do what they did. What the detector can do at all is the next
+      # two steps' question, and they are deliberately separate from this one.
+      - name: Note on what this proves
+        if: success()
+        run: echo "Gold set is fitted and synthetic — the step above guards against regression, not accuracy."
+
+      # The ruler has to be the ruler the generator describes, or every number
+      # below is measured against something nobody reviewed. This fails if the
+      # committed corpus and eval/generate_corpus.py have drifted either way.
+      - name: Eval corpus is what the generator says
+        run: python3 eval/generate_corpus.py --check
+
+      # The held-out measurement. Deliberately NOT gated at a recall or precision
+      # floor: the moment a number here has to clear a bar, someone tunes a rule
+      # until it does and this stops being a measurement. What IS asserted is that
+      # the published figures came from this run — --check-docs fails when
+      # docs/accuracy.md disagrees, so a detection change cannot merge without the
+      # numbers it moved moving with it. Three different precision figures were
+      # live in this repo's prose at the time this was added, none of them current.
+      - name: Held-out accuracy measurement
+        run: python3 accuracy_eval.py --check-docs
+
+  # /welcome is prebuilt from landing/ (React + visx) and committed; the app never
+  # runs Node. This job keeps the committed build honest.
+  landing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: landing/package-lock.json
+
+      # The page's JavaScript port of the redaction plan must render every case
+      # exactly as the product's own plan_segments did. tests/test_landing.py
+      # keeps landing/scripts/plan_cases.json current with the product.
+      - name: Landing plan port matches the product
+        run: node landing/scripts/verify_plan.mjs
+
+      # Rebuild from source and fail on any difference, so a change to landing/
+      # cannot merge without the page it produces (or the other way round).
+      - name: Landing build is up to date
+        working-directory: landing
+        run: |
+          npm ci
+          npm run build
+          git diff --exit-code -- ../templates/landing.html ../static/landing
+          test -z "$(git status --porcelain -- ../templates/landing.html ../static/landing)"

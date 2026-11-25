@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% set active_nav = 'audit' %}
+{% block title %}Audit Log - Legal Redact{% endblock %}
+{% block brand_subtitle %}Admin audit and governance{% endblock %}
+{% block styles %}
+    <style>
+        /* The audit log in the shared design language (workstation.css). */
+        .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 16px; border-bottom: 1px solid var(--color-border-strong); background: var(--color-surface-soft); border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+        .filters input { min-height: 40px; }
+        .audit-metadata { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-secondary); }
+        @media (max-width: 980px) { .filters { grid-template-columns: 1fr; } }
+    </style>
+{% endblock %}
+{% block topbar %}
+            <div class="shell-banner">
+                <strong>Audit metadata is sanitized</strong>
+                <div class="trust-strip"><span class="trust-pill">No raw sensitive text</span><span class="trust-pill">No mapping contents</span></div>
+            </div>
+            <header class="page-header">
+                <h1>Audit Log</h1>
+                <p class="page-lede">{{ positioning }}</p>
+            </header>
+{% endblock %}
+{% block content %}
+            <main class="content">
+                <section class="table-wrap">
+                    <div class="filters">
+                        <input id="documentId" placeholder="Document id">
+                        <input id="actor" placeholder="Actor">
+                        <input id="action" placeholder="Action">
+                        <input id="dateFrom" placeholder="Date from">
+                        <button type="button" onclick="loadAudit()">Filter</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th style="width: 16%">Time</th><th style="width: 14%">Actor</th><th style="width: 12%">Role</th><th style="width: 20%">Action</th><th style="width: 8%">Doc</th><th style="width: 10%">Result</th><th>Metadata</th></tr>
+                        </thead>
+                        <tbody id="auditRows"><tr><td colspan="7">Loading audit log...</td></tr></tbody>
+                    </table>
+                </section>
+            </main>
+{% endblock %}
+{% block after_shell %}
+    <script src="{{ url_for('static', filename='escape.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadAudit);
+
+        async function loadAudit() {
+            const params = new URLSearchParams();
+            if (document.getElementById('documentId').value) params.set('document_id', document.getElementById('documentId').value);
+            if (document.getElementById('actor').value) params.set('actor', document.getElementById('actor').value);
+            if (document.getElementById('action').value) params.set('action', document.getElementById('action').value);
+            if (document.getElementById('dateFrom').value) params.set('date_from', document.getElementById('dateFrom').value);
+            const response = await fetch(`/api/audit-log?${params}`);
+            const data = await response.json();
+            const rows = data.audit_log || [];
+            document.getElementById('auditRows').innerHTML = rows.length ? rows.map((row) => `
+                <tr>
+                    <td>${escapeHtml(row.created_at || '')}</td>
+                    <td>${escapeHtml(row.actor_username || '')}</td>
+                    <td><span class="badge">${escapeHtml(row.actor_role || '')}</span></td>
+                    <td>${escapeHtml(row.action || '')}</td>
+                    <td>${escapeHtml(String(row.document_id || '-'))}</td>
+                    <td>${escapeHtml(row.result || '')}</td>
+                    <td class="audit-metadata">${escapeHtml(row.metadata || '{}')}</td>
+                </tr>
+            `).join('') : '<tr><td colspan="7">No audit rows matched.</td></tr>';
+        }
+
+        async function logout() {
+            await fetch('/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+    </script>
+{% endblock %}

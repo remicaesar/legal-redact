@@ -1,0 +1,17 @@
+{#- The Legal Redact lockup (logo option 1c, "The Placeholder"): a white serif L
+    between square brackets on an ink tile, and "Legal" in the document serif
+    followed by "[Redact]" in the mono accent, the shape of the [PERSON_1]
+    placeholders the reviewed exports carry. Styles live in workstation.css
+    (.brand-icon, .wordmark); the favicon is the brackets alone,
+    static/favicon.svg.
+
+    The brackets are aria-hidden, so the lockup reads as "Legal Redact". -#}
+{%- macro brand_icon() -%}
+<span class="brand-icon" aria-hidden="true"><span class="brand-icon__bracket brand-icon__bracket--open"></span><span class="brand-icon__letter">L</span><span class="brand-icon__bracket brand-icon__bracket--close"></span></span>
+{%- endmacro -%}
+{%- macro wordmark() -%}
+<span class="wordmark"><span class="wordmark__legal">Legal</span> <span class="wordmark__redact"><span aria-hidden="true">[</span>Redact<span aria-hidden="true">]</span></span></span>
+{%- endmacro -%}
+{%- macro favicon_link() -%}
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+{%- endmacro -%}

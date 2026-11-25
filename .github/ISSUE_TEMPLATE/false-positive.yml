@@ -1,0 +1,79 @@
+name: Flagged by mistake
+description: Text was flagged that should not be.
+title: "Flagged by mistake: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not attach, upload or paste a real document or real personal data** — not in this form, not in a screenshot, not in a comment.
+        Make up an example with the same shape instead: invented names, numbers and addresses laid out the way the real text was.
+        The bundled samples in `samples/` are synthetic and fine to refer to.
+  - type: textarea
+    id: example
+    attributes:
+      label: Invented example
+      description: A made-up line or short passage with the same shape as the real text. Mark the part that was flagged.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: category
+    attributes:
+      label: Category flagged
+      description: The category the app showed for it.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it should not be flagged
+    validations:
+      required: false
+  - type: dropdown
+    id: doctype
+    attributes:
+      label: Document type
+      options:
+        - Court filing or petition
+        - Contract
+        - Power of attorney
+        - Letter or notice
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - Turkish
+        - English
+        - Mixed
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: File format
+      options:
+        - .docx
+        - .pdf (text)
+        - .pdf (scanned, OCR)
+        - .txt or .md
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version or commit
+      description: Output of `git rev-parse --short HEAD`, or the release tag.
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: Everything in this issue is invented. It contains no real document and no real personal data.
+          required: true

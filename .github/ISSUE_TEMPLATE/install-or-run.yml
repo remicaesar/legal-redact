@@ -1,0 +1,45 @@
+name: Install or run problem
+description: The app does not install, start or run.
+title: "Install: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not paste a real document, real personal data, passwords or secret keys. Remove them from any output first.
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      description: For example macOS 15, Ubuntu 24.04, Windows 11.
+    validations:
+      required: true
+  - type: dropdown
+    id: route
+    attributes:
+      label: Install route
+      options:
+        - Docker (./start.sh)
+        - Python virtual environment
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command you ran
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: The full output, including the error.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version or commit
+      description: Output of `git rev-parse --short HEAD`, or the release tag.

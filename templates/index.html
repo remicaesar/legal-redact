@@ -1,0 +1,865 @@
+{% extends "base.html" %}
+{% set active_nav = 'dashboard' %}
+{% set nav_icon_aria_hidden = true %}
+{% set nav_current_after_href = true %}
+{% block sidebar_note %}
+            <!-- The sidebar lists places. "Review Queue", "OCR Queue" and
+                 "DOCX QA" were not places: all three were this same dashboard
+                 with a querystring, and the sidebar went on highlighting
+                 "Dashboard" while you stood on one. They are chips above the
+                 table now, where a view belongs. -->
+{% endblock %}
+{% block title %}Dashboard - Legal Redact{% endblock %}
+{% block styles %}
+    <style>
+        /* The dashboard in the shared design language (workstation.css): the
+           page title in the serif on the canvas, one white card for the one
+           primary action, and the documents as a hairline table. */
+        input, select {
+            width: 100%;
+            height: 40px;
+            font: inherit;
+        }
+        /* One column. The filter rail this replaced was ~1,990 px tall for nine
+           documents — three times the height of the table it filtered — and
+           eleven of its buttons filtered dimensions that hold a single value
+           for a single local practitioner. Search plus three chips now sit
+           directly above the rows they narrow. */
+        main { display: block; min-height: calc(100vh - 78px); }
+        .app-shell .content { display: block; padding-top: 28px; }
+        .table-wrap { overflow-x: auto; }
+        /* The upload card: the page's one primary action. */
+        .studio {
+            margin-bottom: 40px;
+            padding: 26px 28px 24px;
+        }
+        .studio-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .studio-head h2 {
+            margin: 0;
+            font-family: var(--font-document);
+            font-size: 24px;
+            font-weight: 440;
+            line-height: 1.2;
+        }
+        .studio-kicker {
+            margin-bottom: 6px;
+            color: var(--color-accent);
+            font-family: var(--font-document);
+            font-size: 15px;
+        }
+        .studio-copy {
+            margin-top: 6px;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+        .studio-form {
+            display: grid;
+            grid-template-columns: minmax(280px, 1fr) minmax(200px, 280px) 178px;
+            gap: 14px;
+            align-items: end;
+        }
+        .upload-field {
+            display: grid;
+            gap: 7px;
+            min-width: 0;
+        }
+        .upload-field-label {
+            color: var(--color-text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        .file-picker {
+            min-width: 0;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 14px 5px 6px;
+            border: 1px solid var(--color-border-strong);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface-soft);
+            cursor: pointer;
+            transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+        }
+        .file-picker:hover {
+            border-color: var(--color-text-secondary);
+            background: var(--color-surface);
+        }
+        .file-picker:focus-within {
+            border-color: var(--color-focus);
+            box-shadow: var(--focus-ring);
+        }
+        .file-picker-action {
+            flex: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            height: 34px;
+            padding: 0 12px;
+            border-radius: 5px;
+            background: var(--color-text);
+            color: var(--color-canvas);
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+        .file-picker-action::before {
+            content: "+";
+            font-family: var(--font-mono);
+            font-size: 15px;
+            font-weight: 400;
+        }
+        .file-picker-name {
+            overflow: hidden;
+            color: var(--color-text-secondary);
+            font-size: 13.5px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .file-picker.has-file .file-picker-name {
+            color: var(--color-text);
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            font-weight: 500;
+        }
+        .visually-hidden-file, .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+        .studio-form select,
+        .studio-form .primary-btn {
+            height: 48px;
+            border-radius: var(--radius-sm);
+        }
+        .primary-btn {
+            height: 40px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 600;
+        }
+        .studio-form .primary-btn {
+            gap: 8px;
+            font-size: 14px;
+        }
+        .studio-form .primary-btn::after {
+            content: "\2192";
+            font-size: 16px;
+            font-weight: 400;
+        }
+        .primary-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+        .studio-status:empty { display: none; }
+        .studio-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            min-height: 24px;
+            color: var(--color-text-secondary);
+            font-size: 13.5px;
+        }
+        .results-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 0 0 14px;
+        }
+        .results-head h2 {
+            margin: 0;
+            font-family: var(--font-document);
+            font-size: 24px;
+            font-weight: 440;
+        }
+        /* The one line that replaced five stat tiles. Two of those tiles could
+           never move: one counted the taxonomy rather than the corpus, and one
+           is structurally zero without a local client roster. */
+        .summary-line {
+            margin: 6px 0 0;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            font-variant-numeric: tabular-nums;
+        }
+        .result-count { white-space: nowrap; }
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .search { width: min(340px, 100%); flex: 1 1 240px; }
+        .view-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .view-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 36px;
+            padding: 0 13px;
+            border: 1px solid var(--color-border-strong);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface);
+            color: var(--color-text);
+            box-shadow: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: border-color 120ms ease, background-color 120ms ease, color 120ms ease;
+        }
+        .view-chip:hover { border-color: var(--color-text-secondary); }
+        .view-chip .chip-count {
+            color: var(--color-text-secondary);
+            font-size: 12.5px;
+            font-variant-numeric: tabular-nums;
+        }
+        /* The chosen view is bracketed, like the current step and the current
+           place in the sidebar. */
+        .view-chip[aria-pressed="true"] {
+            border-color: var(--color-accent);
+            background: var(--color-accent-soft);
+            color: var(--color-accent);
+        }
+        .view-chip[aria-pressed="true"]::before,
+        .view-chip[aria-pressed="true"]::after {
+            margin: 0 -3px;
+            font-family: var(--font-mono);
+            font-weight: 500;
+        }
+        .view-chip[aria-pressed="true"]::before { content: "["; content: "[" / ""; }
+        .view-chip[aria-pressed="true"]::after { content: "]"; content: "]" / ""; }
+        .view-chip[aria-pressed="true"] .chip-count { color: var(--color-accent); }
+        .view-chip .chip-count:empty { display: none; }
+        /* A URL may carry a filter that has no chip — /?file_type=.docx still
+           works, and a bookmark that quietly shortens the list without saying
+           why is worse than no filter at all. Anything not covered by a chip is
+           named here, with its own dismiss. */
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: var(--color-text-secondary);
+            font-size: 13px;
+        }
+        .active-filters[hidden] { display: none; }
+        .active-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 3px 4px 3px 10px;
+            border: 1px solid var(--color-border-strong);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-size: 13px;
+        }
+        .active-filter button {
+            width: 22px;
+            min-height: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: 0;
+            border-radius: 4px;
+            background: var(--color-surface-soft);
+            box-shadow: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            line-height: 1;
+        }
+        .active-filter button:hover { background: var(--color-mark-kept); color: var(--color-text); }
+        .pager {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 16px 0 4px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+        .pager button {
+            min-height: 34px;
+            padding: 0 14px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .pager button:disabled { opacity: 0.4; cursor: default; }
+        .pager[hidden] { display: none; }
+        /* Maintenance, not review. Re-extraction rewrites findings for every
+           incompletely extracted document, so it sits below the work surface
+           rather than beside it. */
+        .maintenance {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 8px;
+            margin-top: 28px;
+            padding-top: 14px;
+            border-top: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+            font-size: 13px;
+        }
+        .maintenance-label {
+            color: var(--color-text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        .maintenance .link-btn { font-size: 13px; min-height: 0; box-shadow: none; }
+        .maintenance .link-btn:disabled { opacity: 0.5; cursor: default; text-decoration: none; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th, td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--color-border);
+            text-align: left;
+            font-size: 13.5px;
+            vertical-align: top;
+        }
+        th {
+            padding-top: 12px;
+            padding-bottom: 11px;
+            border-bottom-color: var(--color-border-strong);
+            text-transform: uppercase;
+            background: var(--color-surface);
+        }
+        tbody tr:last-child td { border-bottom: 0; }
+        tbody tr { cursor: pointer; }
+        .doc-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        /* Category is metadata, not a state. As a pill it wrapped to three
+           lines and set the height of every row; as text it reads in two. */
+        .cell-meta { color: var(--color-text-secondary); font-size: 13px; line-height: 1.4; }
+        /* The file path, in the mono like every file name in the product. */
+        .small {
+            margin-top: 4px;
+            overflow: hidden;
+            color: var(--color-text-secondary);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        /* The status message is the cell that says what to do next, and it was
+           the one being clipped: it needed 385 px and the column gave it 260.
+           It now gets the widest column and wraps instead of truncating, so the
+           sentence survives every viewport. */
+        .pipeline-status {
+            display: grid;
+            grid-template-columns: 9px minmax(0, 1fr);
+            gap: 9px;
+            align-items: baseline;
+            color: var(--color-text);
+            font-size: 13.5px;
+            line-height: 1.45;
+            white-space: normal;
+            overflow-wrap: anywhere;
+        }
+        .pipeline-status::before {
+            width: 7px;
+            height: 7px;
+            margin-top: 1px;
+            border-radius: 999px;
+            background: var(--color-warning);
+            content: "";
+        }
+        .pipeline-status.stage-ready::before { background: var(--color-success); }
+        .pipeline-status.stage-blocked::before { background: var(--color-danger); }
+        .pipeline-status.stage-ocr_review::before, .pipeline-status.stage-needs_ocr::before { background: var(--color-info); }
+        @media (max-width: 980px) {
+            .studio-form { grid-template-columns: 1fr; }
+            .studio { padding: 20px 18px; }
+            .studio-head { flex-wrap: wrap; }
+            .studio-head .badge { flex: none; white-space: nowrap; }
+            .search { width: 100%; flex: 1 1 100%; }
+            .results-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+            /* Category and the finding tally go; the status sentence stays.
+               It used to be the column dropped on a phone, which left the row
+               with no answer to "what do I do with this document?". */
+            .hide-mobile { display: none; }
+            /* With three of six columns hidden, the desktop percentages no
+               longer describe the row -- they are scaled up proportionally, and
+               the risk badge came out at 37 px and spilled over the status dot.
+               The three surviving columns get their own split. */
+            th, td { padding: 12px 10px; }
+            th.col-doc { width: 40% !important; }
+            th.col-risk { width: 20% !important; }
+            th.col-status { width: 40% !important; }
+        }
+    </style>
+{% endblock %}
+{% block topbar %}
+            <!-- The terminology glossary card that used to sit on the work
+                 surface is gone; each definition now hangs on the term it
+                 defines. The full table stays on /settings and at
+                 /api/terminology. -->
+            <div class="shell-banner">
+                <strong>Privacy-reviewed legal workflow</strong>
+                <div class="trust-strip">
+                    <span class="trust-pill" title="{{ terminology.redaction.label }}: {{ terminology.redaction.description }}">Redacted</span>
+                    <span class="trust-pill" title="{{ terminology.de_identification.label }}: {{ terminology.de_identification.description }}">De-identified</span>
+                    <span class="trust-pill" title="{{ terminology.pseudonymization.label }}: {{ terminology.pseudonymization.description }}">Pseudonymized</span>
+                    <span class="trust-pill" title="No output leaves this workstation without a reviewer approving it.">Human review required</span>
+                </div>
+            </div>
+
+            <header class="page-header">
+                <h1>Legal Redact</h1>
+                <p class="page-lede" title="{{ terminology.anonymization.label }}: {{ terminology.anonymization.description }}">{{ positioning }}</p>
+            </header>
+{% endblock %}
+{% block content %}
+            <main>
+                <section class="content">
+            <section class="studio card">
+                <div class="studio-head">
+                    <div>
+                        <div class="studio-kicker">New review</div>
+                        <h2>Prepare a document for review</h2>
+                        <div class="studio-copy">Files are processed locally and remain subject to human approval.</div>
+                    </div>
+                    <span class="badge">DOCX · PDF · UDF · TXT</span>
+                </div>
+                {% if can_review %}
+                <form id="uploadForm" class="studio-form">
+                    <div class="upload-field">
+                        <span class="upload-field-label">Document</span>
+                        <label id="filePicker" class="file-picker" for="uploadFile">
+                            <span class="file-picker-action">Choose file</span>
+                            <span id="filePickerName" class="file-picker-name">No file selected</span>
+                        </label>
+                        <input class="visually-hidden-file" id="uploadFile" name="file" type="file" accept=".docx,.doc,.pdf,.udf,.txt,.md,.png,.jpg,.jpeg,.xlsx,.pptx,.zip">
+                    </div>
+                    <label class="upload-field" for="matterSelect">
+                        <span class="upload-field-label">Matter</span>
+                        <select id="matterSelect" name="matter_id"><option value="">Unassigned matter</option></select>
+                    </label>
+                    <button id="uploadButton" class="primary-btn" type="submit">Upload & Analyze</button>
+                </form>
+                <div id="uploadStatus" class="studio-status"></div>
+                {% else %}
+                <div class="role-readonly">Viewer role is read-only. A reviewer or admin must upload, review, redact, and export documents.</div>
+                {% endif %}
+            </section>
+
+            <div class="results-head">
+                <div>
+                    <h2 id="documentsHeading">Documents</h2>
+                    <p id="corpusSummary" class="summary-line">{{ stats.total }} document{{ '' if stats.total == 1 else 's' }}</p>
+                </div>
+                <span id="resultCount" class="badge result-count">Showing {{ stats.total }}</span>
+            </div>
+
+            <div class="filter-bar">
+                <div class="search">
+                    <label class="sr-only" for="searchInput">Search documents</label>
+                    <input id="searchInput" type="search" placeholder="Search documents, titles, risk notes" autocomplete="off">
+                </div>
+                <div class="view-chips" id="viewChips" role="group" aria-label="Document views"></div>
+            </div>
+            <div class="active-filters" id="activeFilters" hidden></div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col-doc" style="width: {{ 27 if stats.clients else 28 }}%">Document</th>
+                            <th class="hide-mobile" style="width: {{ 14 if stats.clients else 15 }}%">Category</th>
+                            {% if stats.clients %}<th class="hide-mobile" style="width: 10%">Client</th>{% endif %}
+                            <th class="col-risk" style="width: 8%">Risk</th>
+                            <th class="col-status" style="width: {{ 33 if stats.clients else 41 }}%">Status</th>
+                            <th class="hide-mobile" style="width: 8%">Findings</th>
+                        </tr>
+                    </thead>
+                    <tbody id="docTableBody"></tbody>
+                </table>
+            </div>
+            <div id="pager" class="pager" hidden>
+                <button type="button" id="pagerPrev" onclick="changePage(-1)">&#8592; Prev</button>
+                <span id="pagerLabel"></span>
+                <button type="button" id="pagerNext" onclick="changePage(1)">Next &#8594;</button>
+            </div>
+            {% if can_review %}
+            <div class="maintenance">
+                <span class="maintenance-label">Maintenance</span>
+                <button id="reextractFailedBtn" class="link-btn" type="button" onclick="reextractFailed()">Re-extract failed docs</button>
+                <span>Re-runs extraction for every document whose text is incomplete, replacing their findings.</span>
+            </div>
+            {% endif %}
+                </section>
+            </main>
+{% endblock %}
+{% block after_shell %}
+    <script src="{{ url_for('static', filename='escape.js') }}"></script>
+    <script>
+        // Every key the /api/documents endpoint accepts stays here, and
+        // initializeFiltersFromUrl still reads all of them, so every URL the
+        // old filter rail could produce keeps filtering exactly as it did.
+        // What changed is what the page *renders*: three chips for the three
+        // views a single practitioner actually works in, and a named pill for
+        // anything else a URL carries.
+        const filters = { search: '', category: '', client: '', risk: '', readiness: '', review_status: '', extraction_status: '', ocr_status: '', file_type: '' };
+        const canReview = {{ 'true' if can_review else 'false' }};
+        const canAdmin = {{ 'true' if can_admin else 'false' }};
+        const hasClientColumn = {{ 'true' if stats.clients else 'false' }};
+        const COLUMN_COUNT = hasClientColumn ? 6 : 5;
+
+        const CHIPS = [
+            { id: 'needs-review', label: 'Needs review', key: 'review_status', value: 'pending_review' },
+            { id: 'needs-ocr', label: 'Needs OCR', key: 'review_status', value: 'needs_ocr' },
+            { id: 'blocked', label: 'Blocked', key: 'readiness', value: 'Blocked' },
+        ];
+
+        const FILTER_LABELS = {
+            category: 'Category',
+            client: 'Client',
+            risk: 'Residual risk',
+            readiness: 'External LLM',
+            review_status: 'Workflow',
+            extraction_status: 'Extraction',
+            ocr_status: 'OCR state',
+            file_type: 'File type',
+        };
+        const CATEGORY_NAMES = { {% for cat in category_stats %}"{{ cat.id }}": {{ cat.name_tr | tojson }}{{ ", " if not loop.last }}{% endfor %} };
+        const CLIENT_NAMES = { {% for client in client_stats %}"{{ client.id }}": {{ client.name | tojson }}{{ ", " if not loop.last }}{% endfor %} };
+        const VALUE_LABELS = {
+            category: CATEGORY_NAMES,
+            client: CLIENT_NAMES,
+            risk: { High: 'High', Medium: 'Medium', Low: 'Low', Unknown: 'Unknown' },
+            readiness: { Blocked: 'Blocked', Needs: 'Needs review' },
+            review_status: {
+                needs_ocr: 'Needs OCR',
+                pending_review: 'Pending review',
+                redaction_complete: 'Redaction complete',
+                reviewed_blocked: 'Reviewed blocked',
+                approved_for_external_llm: 'Approved',
+            },
+            extraction_status: { Complete: 'Complete', Partial: 'Partial', Failed: 'Failed' },
+            ocr_status: {
+                queued: 'Queued', processing: 'Processing', completed: 'Completed', accepted: 'Accepted',
+                rejected: 'Rejected', failed: 'Failed', not_required: 'Not required',
+            },
+            file_type: { '.docx': 'DOCX', '.pdf': 'PDF', '.udf': 'UDF', '.xlsx': 'XLSX', '.txt': 'TXT', '.pptx': 'PPTX' },
+        };
+
+        let debounceTimer = null;
+        let page = 1;
+        const PAGE_SIZE = 50;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeFiltersFromUrl();
+            renderChips();
+            renderActiveFilters();
+            loadMatterOptions();
+            loadDocuments();
+            loadCounts();
+            const uploadForm = document.getElementById('uploadForm');
+            if (uploadForm) uploadForm.addEventListener('submit', uploadDocument);
+            const uploadFile = document.getElementById('uploadFile');
+            if (uploadFile) uploadFile.addEventListener('change', updateFilePicker);
+            const search = document.getElementById('searchInput');
+            search.value = filters.search;
+            search.addEventListener('input', (event) => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    filters.search = event.target.value;
+                    page = 1;
+                    syncUrl();
+                    loadDocuments();
+                }, 250);
+            });
+        });
+
+        async function loadMatterOptions() {
+            const select = document.getElementById('matterSelect');
+            if (!select) return;
+            const response = await fetch('/api/matters');
+            if (!response.ok) return;
+            const data = await response.json();
+            select.innerHTML = '<option value="">Unassigned matter</option>' +
+                (data.matters || []).map((matter) => `<option value="${matter.id}">${escapeHtml(matter.name)}</option>`).join('');
+        }
+
+        function updateFilePicker() {
+            const fileInput = document.getElementById('uploadFile');
+            const picker = document.getElementById('filePicker');
+            const name = document.getElementById('filePickerName');
+            const file = fileInput?.files?.[0];
+            picker?.classList.toggle('has-file', Boolean(file));
+            if (name) name.textContent = file?.name || 'No file selected';
+        }
+
+        function initializeFiltersFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            Object.keys(filters).forEach((key) => {
+                if (params.get(key)) filters[key] = params.get(key);
+            });
+        }
+
+        // The address bar is the durable name of a view. /?review_status=pending_review
+        // is what the "Review Queue" nav item used to point at; clicking the
+        // chip now produces that same URL, so an old bookmark and a new click
+        // land in the same place.
+        function syncUrl() {
+            const params = new URLSearchParams();
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value) params.set(key, value);
+            });
+            const query = params.toString();
+            window.history.replaceState({}, '', query ? `${window.location.pathname}?${query}` : window.location.pathname);
+        }
+
+        function chipIsActive(chip) {
+            return filters[chip.key] === chip.value;
+        }
+
+        function renderChips() {
+            const host = document.getElementById('viewChips');
+            host.innerHTML = CHIPS.map((chip) => `
+                <button type="button" class="view-chip" data-chip="${chip.id}" aria-pressed="${chipIsActive(chip)}" onclick="toggleChip('${chip.id}')">
+                    <span>${escapeHtml(chip.label)}</span><span class="chip-count" data-chip-count="${chip.id}"></span>
+                </button>
+            `).join('');
+        }
+
+        function toggleChip(id) {
+            const chip = CHIPS.find((candidate) => candidate.id === id);
+            if (!chip) return;
+            filters[chip.key] = chipIsActive(chip) ? '' : chip.value;
+            page = 1;
+            renderChips();
+            renderActiveFilters();
+            syncUrl();
+            loadDocuments();
+        }
+
+        // Anything a URL carries that no chip represents is named explicitly.
+        // Without this, /?file_type=.docx silently shows four of nine rows and
+        // the page gives no account of itself.
+        function activeExtraFilters() {
+            return Object.entries(filters).filter(([key, value]) => {
+                if (!value || key === 'search') return false;
+                return !CHIPS.some((chip) => chip.key === key && chip.value === value);
+            });
+        }
+
+        function renderActiveFilters() {
+            const host = document.getElementById('activeFilters');
+            const extras = activeExtraFilters();
+            if (!extras.length) {
+                host.hidden = true;
+                host.innerHTML = '';
+                return;
+            }
+            host.hidden = false;
+            host.innerHTML = '<span>Filtered by</span>' + extras.map(([key, value]) => {
+                const name = FILTER_LABELS[key] || key;
+                const shown = (VALUE_LABELS[key] && VALUE_LABELS[key][value]) || value;
+                return `<span class="active-filter">${escapeHtml(name)}: ${escapeHtml(shown)}
+                    <button type="button" aria-label="Remove ${escapeHtml(name)} filter" onclick="clearFilter('${escapeHtml(key)}')">&times;</button></span>`;
+            }).join('');
+        }
+
+        function clearFilter(key) {
+            if (!(key in filters)) return;
+            filters[key] = '';
+            page = 1;
+            renderChips();
+            renderActiveFilters();
+            syncUrl();
+            loadDocuments();
+        }
+
+        function clearFilters() {
+            Object.keys(filters).forEach((key) => { filters[key] = ''; });
+            const search = document.getElementById('searchInput');
+            if (search) search.value = '';
+            page = 1;
+            renderChips();
+            renderActiveFilters();
+            syncUrl();
+            loadDocuments();
+        }
+
+        // The line that replaced the stat tiles, and the chip counts, come from
+        // the same endpoint the table uses. page_size=1 keeps the RESPONSE to one
+        // row, but not the work: /api/documents derives each document's release
+        // state rather than reading the cached column, and it has to do that for
+        // every matching row before it can filter or paginate on the answer. So
+        // each of these four calls is a full pass over the corpus — measured at
+        // ~61 ms per 2 000 documents, which is what a local workstation can
+        // afford. If that stops being true, the per-document review_gate_counts
+        // queries are ~40% of it and collapse into three GROUP BY queries.
+        async function loadCounts() {
+            const total = async (query) => {
+                const response = await fetch(`/api/documents?${query}${query ? '&' : ''}page=1&page_size=1`);
+                if (!response.ok) return null;
+                const data = await response.json();
+                return typeof data.total === 'number' ? data.total : null;
+            };
+            const [all, needsReview, needsOcr, blocked] = await Promise.all([
+                total(''),
+                total('review_status=pending_review'),
+                total('review_status=needs_ocr'),
+                total('readiness=Blocked'),
+            ]);
+            const counts = { 'needs-review': needsReview, 'needs-ocr': needsOcr, blocked };
+            CHIPS.forEach((chip) => {
+                const node = document.querySelector(`[data-chip-count="${chip.id}"]`);
+                if (node) node.textContent = counts[chip.id] === null || counts[chip.id] === undefined ? '' : String(counts[chip.id]);
+            });
+            const parts = [];
+            if (all !== null) parts.push(`${all} document${all === 1 ? '' : 's'}`);
+            if (needsReview !== null) parts.push(`${needsReview} need${needsReview === 1 ? 's' : ''} review`);
+            if (needsOcr !== null) parts.push(`${needsOcr} need${needsOcr === 1 ? 's' : ''} OCR`);
+            if (blocked !== null) parts.push(`${blocked} blocked from external LLM`);
+            if (parts.length) document.getElementById('corpusSummary').textContent = parts.join(' · ');
+        }
+
+        async function reextractFailed() {
+            if (!window.confirm('Re-run extraction for every document without complete extraction? Their detector findings are replaced and they return to pending review.')) return;
+            const button = document.getElementById('reextractFailedBtn');
+            button.disabled = true;
+            button.textContent = 'Re-extracting…';
+            try {
+                const response = await fetch('/api/documents/reextract-failed', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+                const data = await response.json();
+                if (!response.ok) {
+                    alert(data.error || 'Re-extraction failed.');
+                    return;
+                }
+                alert(`Re-extraction finished: ${data.recovered} recovered, ${data.still_incomplete} still need OCR/manual review, ${data.missing_file} missing files (of ${data.attempted}).`);
+                page = 1;
+                loadDocuments();
+                loadCounts();
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Re-extract failed docs';
+            }
+        }
+
+        async function loadDocuments() {
+            const params = new URLSearchParams();
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value) params.set(key, value);
+            });
+            params.set('page', String(page));
+            params.set('page_size', String(PAGE_SIZE));
+            const response = await fetch(`/api/documents?${params}`);
+            const data = await response.json();
+            const start = data.total ? (data.page - 1) * data.page_size + 1 : 0;
+            const end = Math.min(data.total, data.page * data.page_size);
+            document.getElementById('resultCount').textContent =
+                data.total > data.page_size ? `Showing ${start}–${end} of ${data.total}` : `Showing ${data.total}`;
+            renderDocuments(data.documents);
+            renderPager(data);
+        }
+
+        function renderPager(data) {
+            const pager = document.getElementById('pager');
+            const pages = data.pages || 1;
+            if (pages <= 1) {
+                pager.hidden = true;
+                return;
+            }
+            pager.hidden = false;
+            document.getElementById('pagerLabel').textContent = `Page ${data.page} of ${pages}`;
+            document.getElementById('pagerPrev').disabled = data.page <= 1;
+            document.getElementById('pagerNext').disabled = data.page >= pages;
+            window.pagerPages = pages;
+        }
+
+        function changePage(delta) {
+            const pages = window.pagerPages || 1;
+            page = Math.min(pages, Math.max(1, page + delta));
+            loadDocuments();
+            document.querySelector('.results-head').scrollIntoView({ block: 'nearest' });
+        }
+
+        async function uploadDocument(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadFile');
+            const status = document.getElementById('uploadStatus');
+            const button = document.getElementById('uploadButton');
+            if (!fileInput.files.length) {
+                status.innerHTML = '<span class="badge ready-Needs">Choose a file</span>';
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            const matterSelect = document.getElementById('matterSelect');
+            if (matterSelect && matterSelect.value) formData.append('matter_id', matterSelect.value);
+            button.disabled = true;
+            status.innerHTML = '<span class="badge">Analyzing</span><span>Extracting text and preparing review.</span>';
+            const response = await fetch('/api/upload', { method: 'POST', body: formData });
+            const data = await response.json().catch(() => ({}));
+            button.disabled = false;
+            if (!response.ok) {
+                status.innerHTML = `<span class="badge ready-Blocked">Upload failed</span><span>${escapeHtml(data.error || 'Unable to analyze file')}</span>`;
+                return;
+            }
+            fileInput.value = '';
+            updateFilePicker();
+            status.innerHTML = `
+                <span class="badge risk-${escapeHtml(data.residual_risk || 'Unknown')}">${escapeHtml(data.residual_risk || 'Unknown')}</span>
+                <span>${escapeHtml(data.filename || 'Document')} ready for review</span>
+            `;
+            window.location.href = `/studio/${data.id}`;
+        }
+
+        function renderDocuments(documents) {
+            const body = document.getElementById('docTableBody');
+            if (!documents.length) {
+                // An empty library and an over-narrow filter look identical in the
+                // table but need opposite actions: upload something, or widen the
+                // filters. Telling a first-run user their filters excluded
+                // everything sends them looking for a filter they never set.
+                const filtered = Object.values(filters).some(Boolean);
+                body.innerHTML = filtered
+                    ? `<tr><td colspan="${COLUMN_COUNT}">No documents match the current view. <button type="button" class="link-btn" onclick="clearFilters()">Clear filters</button></td></tr>`
+                    : `<tr><td colspan="${COLUMN_COUNT}">No documents yet. Upload one above to extract, classify, and privacy-review it.</td></tr>`;
+                return;
+            }
+            body.innerHTML = documents.map((doc) => `
+                <tr onclick="window.location.href='/studio/${doc.id}'">
+                    <td>
+                        <div class="doc-title" title="${escapeHtml(doc.filename)}">${escapeHtml(doc.title || doc.filename)}</div>
+                        <div class="small">${escapeHtml(doc.filepath || '')}</div>
+                    </td>
+                    <td class="hide-mobile"><span class="cell-meta">${escapeHtml(doc.category_icon || 'DOC')} ${escapeHtml(doc.subcategory_name || doc.category_name || '-')}</span></td>
+                    ${hasClientColumn ? `<td class="hide-mobile">${escapeHtml(doc.client_name || '-')}</td>` : ''}
+                    <td><span class="badge risk-${escapeHtml(doc.residual_risk || 'Low')}">${escapeHtml(doc.residual_risk || 'Unknown')}</span></td>
+                    <td><span class="pipeline-status stage-${escapeHtml(doc.pipeline_stage || 'needs_review')}" title="Raw state: ${escapeHtml(doc.review_status || '-')} · extraction ${escapeHtml(doc.extraction_status || '-')} · OCR ${escapeHtml(doc.ocr_status || '-')} · ${escapeHtml(doc.external_llm_readiness || '-')}"><span>${escapeHtml(doc.pipeline_message || doc.review_status || '-')}</span></span></td>
+                    <td class="hide-mobile">${Number(doc.finding_count || 0)} / ${Number(doc.critical_count || 0)}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function logout() {
+            await fetch('/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+    </script>
+{% endblock %}
