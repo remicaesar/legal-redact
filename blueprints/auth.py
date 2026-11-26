@@ -2,17 +2,25 @@
 
 from __future__ import annotations
 
+import secrets
+
 from flask import Blueprint, g, jsonify, redirect, render_template_string, request, session, url_for
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import (
     audit_event,
+    bump_session_version,
     clear_login_attempts,
+    clear_password_change_attempts,
     get_db,
     issue_csrf_token,
     login_lockout_seconds,
+    new_password_problem,
+    password_change_lockout_seconds,
     record_failed_login,
+    record_failed_password_change,
     require_roles,
+    session_version,
 )
 
 auth_bp = Blueprint("auth", __name__)
@@ -144,6 +152,8 @@ def login():
     session["user_id"] = user["id"]
     session["username"] = user["username"]
     session["role"] = user["role"]
+    session["session_version"] = session_version(conn, user["id"])
+    session["session_nonce"] = secrets.token_urlsafe(16)
     g.current_user = {"id": user["id"], "username": user["username"], "role": user["role"], "active": user["active"]}
     conn.execute("UPDATE users SET last_login_at = CURRENT_TIMESTAMP WHERE id = ?", (user["id"],))
     audit_event(conn, "login", result="success")
@@ -174,3 +184,60 @@ def api_me():
     if not user:
         return jsonify({"authenticated": False}), 401
     return jsonify({"authenticated": True, "user": {"username": user["username"], "role": user["role"]}})
+
+
+@auth_bp.route("/api/account/password", methods=["POST"])
+@require_roles("viewer", "reviewer", "admin")
+def change_own_password():
+    """Change the signed-in user's own password; there is no way to name another account.
+
+    A wrong current password is counted per session (user and the nonce minted
+    at sign-in) in password_change_attempts, not in login_attempts: counting it
+    as a failed login would let a mistyped form lock the owner out of signing
+    in, and counting it per user would let a stolen session lock the owner out
+    of the change that signs it out. Once the login throttle's per-pair cap is
+    reached the session gets 429 without the hash being checked. A successful change clears that counter and
+    signs out every other session of this user; the session that made the
+    change is moved to the new version and stays signed in.
+    """
+    payload = request.get_json(silent=True)
+    fields = ("current_password", "new_password", "confirm_password")
+    values = [payload.get(field) for field in fields] if isinstance(payload, dict) else []
+    if len(values) != len(fields) or not all(isinstance(value, str) for value in values):
+        return jsonify({"error": "The current password and both new passwords must be text."}), 400
+    current_password, new_password, confirm_password = values
+    user_id = g.current_user["id"]
+    session_nonce = session.get("session_nonce", "")
+    conn = get_db()
+
+    locked_for = password_change_lockout_seconds(conn, user_id, session_nonce)
+    if locked_for > 0:
+        audit_event(conn, "password_change", result="throttled")
+        conn.commit()
+        conn.close()
+        response = jsonify({"error": "Too many wrong current passwords. Try again later."})
+        response.headers["Retry-After"] = str(locked_for)
+        return response, 429
+
+    row = conn.execute("SELECT password_hash FROM users WHERE id = ? AND active = 1", (user_id,)).fetchone()
+    if not row or not check_password_hash(row["password_hash"], current_password):
+        record_failed_password_change(conn, user_id, session_nonce)
+        audit_event(conn, "password_change", result="failed", metadata={"reason": "current_password"})
+        conn.commit()
+        conn.close()
+        return jsonify({"error": "Current password is incorrect."}), 403
+
+    problem = new_password_problem(new_password, confirm_password)
+    if problem:
+        audit_event(conn, "password_change", result="blocked", metadata={"reason": problem})
+        conn.commit()
+        conn.close()
+        return jsonify({"error": problem}), 400
+
+    conn.execute("UPDATE users SET password_hash = ? WHERE id = ?", (generate_password_hash(new_password), user_id))
+    clear_password_change_attempts(conn, user_id)
+    session["session_version"] = bump_session_version(conn, user_id)
+    audit_event(conn, "password_change", result="success")
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True})

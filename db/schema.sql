@@ -264,6 +264,26 @@ CREATE TABLE IF NOT EXISTS login_attempts (
 CREATE INDEX IF NOT EXISTS idx_login_attempts_pair ON login_attempts(username, remote_addr, attempted_at);
 CREATE INDEX IF NOT EXISTS idx_login_attempts_addr ON login_attempts(remote_addr, attempted_at);
 
+-- Wrong current passwords on POST /api/account/password, per session. Mirrors
+-- db/migrations/007_password_change_attempts.sql.
+CREATE TABLE IF NOT EXISTS password_change_attempts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    session_nonce TEXT NOT NULL DEFAULT '',
+    attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_password_change_attempts_session ON password_change_attempts(user_id, session_nonce, attempted_at);
+
+-- Each user's session version; a user with no row is at 0. Mirrors
+-- db/migrations/008_user_session_versions.sql.
+CREATE TABLE IF NOT EXISTS user_session_versions (
+    user_id INTEGER PRIMARY KEY,
+    version INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS audit_log (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     actor_id INTEGER,

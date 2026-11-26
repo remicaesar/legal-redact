@@ -1,6 +1,6 @@
 """Request-security helpers with no tie to the Flask app object.
 
-The CSRF token helpers and the login throttle, moved out of ``app.py``
+The CSRF token helpers, the login throttle and the password-change throttle, moved out of ``app.py``
 unchanged. ``app.py`` re-exports every name here, so blueprints keep
 importing them from ``app``. The pieces bound to the app object stay there:
 the ``csrf_protect`` before-request hook and the Jinja ``csrf_token`` global.
@@ -108,12 +108,48 @@ def login_lockout_seconds(conn: sqlite3.Connection, username: str, remote_addr: 
         ),
     ):
         count, first_attempt = conn.execute(sql, params).fetchone()
-        if count < cap or not first_attempt:
-            continue
-        elapsed = conn.execute(
-            "SELECT CAST(strftime('%s','now') AS INTEGER) - CAST(strftime('%s', ?) AS INTEGER)",
-            (first_attempt,),
-        ).fetchone()[0]
-        remaining = max(remaining, window - int(elapsed))
+        remaining = max(remaining, _seconds_left(conn, count, first_attempt, cap, window))
 
-    return max(remaining, 0)
+    return remaining
+
+
+def _seconds_left(conn: sqlite3.Connection, count: int, first_attempt: str | None, cap: int, window: int) -> int:
+    """Seconds until the oldest of ``count`` attempts leaves the window; 0 under the cap."""
+    if count < cap or not first_attempt:
+        return 0
+    elapsed = conn.execute(
+        "SELECT CAST(strftime('%s','now') AS INTEGER) - CAST(strftime('%s', ?) AS INTEGER)",
+        (first_attempt,),
+    ).fetchone()[0]
+    return max(window - int(elapsed), 0)
+
+
+def record_failed_password_change(conn: sqlite3.Connection, user_id: int, session_nonce: str) -> None:
+    conn.execute(
+        "INSERT INTO password_change_attempts (user_id, session_nonce) VALUES (?, ?)",
+        (user_id, session_nonce),
+    )
+
+
+def clear_password_change_attempts(conn: sqlite3.Connection, user_id: int) -> None:
+    conn.execute("DELETE FROM password_change_attempts WHERE user_id = ?", (user_id,))
+
+
+def password_change_lockout_seconds(conn: sqlite3.Connection, user_id: int, session_nonce: str) -> int:
+    """Seconds until this session may submit a current password again; 0 when not locked out.
+
+    Per (user, session nonce) and apart from login_attempts: a mistyped form
+    must never lock its owner out of /login, and a stolen session's guesses must
+    never lock the owner's session out of the change that signs the thief out.
+    A session with no nonce passes "", one bucket for all such sessions of the
+    user. Uses the login throttle's per-pair cap and window.
+    """
+    cap, _addr_cap, window = login_throttle_limits()
+    offset = f"-{window} seconds"
+    conn.execute("DELETE FROM password_change_attempts WHERE attempted_at < datetime('now', ?)", (offset,))
+    count, first_attempt = conn.execute(
+        "SELECT COUNT(*), MIN(attempted_at) FROM password_change_attempts "
+        "WHERE user_id = ? AND session_nonce = ? AND attempted_at >= datetime('now', ?)",
+        (user_id, session_nonce, offset),
+    ).fetchone()
+    return _seconds_left(conn, count, first_attempt, cap, window)

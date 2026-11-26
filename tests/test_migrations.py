@@ -44,6 +44,8 @@ class MigrationTests(unittest.TestCase):
                 "005_finding_review_split_reject",
                 "005_login_throttle",
                 "006_pdf_region_occurrences",
+                "007_password_change_attempts",
+                "008_user_session_versions",
             ],
         )
         self.assertEqual(second, [])

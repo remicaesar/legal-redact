@@ -160,8 +160,8 @@ class AdminPasswordTests(unittest.TestCase):
             (Path(folder) / "db").mkdir()
             database = Path(folder) / "db" / "legal_documents.db"
             with sqlite3.connect(database) as conn:
-                conn.execute("CREATE TABLE users (username TEXT, password_hash TEXT)")
-                conn.execute("INSERT INTO users VALUES ('synthetic-admin', 'old-hash')")
+                conn.execute("CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password_hash TEXT)")
+                conn.execute("INSERT INTO users (username, password_hash) VALUES ('synthetic-admin', 'old-hash')")
             unknown = self.run_reset_command(Path(folder), "")
             self.assertNotEqual(unknown.returncode, 0, unknown.stdout)
             self.assertIn("No account named admin", unknown.stderr)

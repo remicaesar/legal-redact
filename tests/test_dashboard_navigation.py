@@ -135,7 +135,7 @@ class SidebarListsPlacesTests(unittest.TestCase):
             hrefs = [href for href, _glyph, _label in NAV_ITEM.findall(sidebar_of(page))]
             with self.subTest(template=name):
                 self.assertNotIn("/audit-log", hrefs)
-                self.assertNotIn("/settings", hrefs)
+                self.assertIn("/settings", hrefs)
 
 
 class DashboardSurfaceTests(unittest.TestCase):

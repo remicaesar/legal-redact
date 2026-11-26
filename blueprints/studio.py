@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from flask import Blueprint, jsonify, render_template, render_template_string, request
 
-from app import audit_event, get_db, require_roles, template_user_context
+from app import PASSWORD_MIN_LENGTH, audit_event, get_db, require_roles, template_user_context
 from legal_analyzer.privacy import finding_explanations
 from legal_analyzer.taxonomy import OUTPUT_POSITIONING, TERMINOLOGY
 
@@ -37,9 +37,15 @@ def audit_log_page():
 
 
 @studio_bp.route("/settings")
-@require_roles("admin")
+@require_roles("viewer", "reviewer", "admin")
 def settings_page():
-    return render_template("settings.html", positioning=OUTPUT_POSITIONING, terminology=TERMINOLOGY, **template_user_context())
+    return render_template(
+        "settings.html",
+        positioning=OUTPUT_POSITIONING,
+        terminology=TERMINOLOGY,
+        password_min_length=PASSWORD_MIN_LENGTH,
+        **template_user_context(),
+    )
 
 
 @studio_bp.route("/api/terminology")

@@ -76,10 +76,13 @@ from web_security import (  # noqa: F401
     CSRF_SAFE_METHODS,
     FORM_MIMETYPES,
     clear_login_attempts,
+    clear_password_change_attempts,
     issue_csrf_token,
     login_lockout_seconds,
     login_throttle_limits,
+    password_change_lockout_seconds,
     record_failed_login,
+    record_failed_password_change,
     submitted_csrf_token,
 )
 
@@ -185,29 +188,57 @@ ADMIN_PASSWORD_ENV_VAR = "LEGAL_ANALYZER_ADMIN_PASSWORD"
 # .env.example or the README is a login anyone can read. Matched
 # case-insensitively anywhere in the value.
 ADMIN_PASSWORD_PLACEHOLDER_MARKERS = ("change-this", "change-me", "changeme", "replace-me", "your-password")
+# The shortest password Settings accepts as a new one. NIST SP 800-63B-4 sets 15
+# for a password that is the only factor, as it is here; the passwords the
+# start-up guidance generates (token_urlsafe(18), Docker's token_urlsafe(24))
+# are 24 and 32 characters. Not applied to LEGAL_ANALYZER_ADMIN_PASSWORD at
+# start-up: that would stop an existing install from starting.
+PASSWORD_MIN_LENGTH = 15
 ADMIN_PASSWORD_RESET_COMMAND = (
     "python3 -c \"import getpass, os, sqlite3, sys; from werkzeug.security import generate_password_hash; "
     "u = os.environ.get('LEGAL_ANALYZER_ADMIN_USERNAME', 'admin'); "
     "c = sqlite3.connect('db/legal_documents.db'); "
     "n = c.execute('UPDATE users SET password_hash = ? WHERE username = ?', "
-    "(generate_password_hash(getpass.getpass('New password: ')), u)).rowcount; c.commit(); "
+    "(generate_password_hash(getpass.getpass('New password: ')), u)).rowcount; "
+    "c.execute('CREATE TABLE IF NOT EXISTS user_session_versions (user_id INTEGER PRIMARY KEY, version INTEGER NOT NULL DEFAULT 0, "
+    "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE)'); "
+    "c.execute('INSERT INTO user_session_versions (user_id, version) SELECT id, 1 FROM users WHERE username = ? "
+    "ON CONFLICT(user_id) DO UPDATE SET version = version + 1', (u,)); c.commit(); "
     "sys.exit('No account named ' + u + ' in db/legal_documents.db; nothing changed.') if n == 0 "
     "else print(n, 'account updated:', u)\""
 )
 
 
+def is_placeholder_password(password: str) -> bool:
+    """True for a value carrying published placeholder text, matched case-insensitively anywhere."""
+    folded = password.casefold()
+    return any(marker in folded for marker in ADMIN_PASSWORD_PLACEHOLDER_MARKERS)
+
+
+def new_password_problem(new_password: str, confirm_password: str) -> str | None:
+    """Why Settings refuses this new password, or None when it is acceptable."""
+    if new_password != confirm_password:
+        return "The new passwords do not match."
+    if len(new_password) < PASSWORD_MIN_LENGTH:
+        return f"The new password must be at least {PASSWORD_MIN_LENGTH} characters."
+    if is_placeholder_password(new_password):
+        return "The new password is a published placeholder, not a password. Choose your own."
+    return None
+
+
 def check_admin_password_setting() -> None:
     """Refuse a placeholder admin password before it can become a real login."""
     password = os.environ.get(ADMIN_PASSWORD_ENV_VAR, "").strip()
-    if any(marker in password.casefold() for marker in ADMIN_PASSWORD_PLACEHOLDER_MARKERS):
+    if is_placeholder_password(password):
         raise SystemExit(
             f"{ADMIN_PASSWORD_ENV_VAR} is still a placeholder, not a password.\n"
             "The first admin account is created with it, and a placeholder is published text.\n"
             "Choose your own, or generate one:\n"
             '  python3 -c "import secrets; print(secrets.token_urlsafe(18))"\n'
             "Changing this setting does not change an admin that already exists: it keeps its\n"
-            "current password, and this version has no in-app password change. If that admin was\n"
-            "created with the placeholder, set a new password for it from the clone directory:\n"
+            "current password. If that admin was created with the placeholder, start the app with\n"
+            "a real password here, sign in as that admin with the old placeholder, and change the\n"
+            "password in Settings. If that password is forgotten, set a new one from the clone directory:\n"
             f"  {ADMIN_PASSWORD_RESET_COMMAND}\n"
             "or start a fresh database (python3 db/init_db.py --reset deletes every document and review)."
         )
@@ -372,9 +403,26 @@ def load_current_user() -> None:
         "SELECT id, username, role, active FROM users WHERE id = ? AND active = 1",
         (user_id,),
     ).fetchone()
+    version = session_version(conn, user_id) if user else None
     conn.close()
-    if user:
+    if user and session.get("session_version", 0) == version:
         g.current_user = dict(user)
+
+
+def session_version(conn: sqlite3.Connection, user_id: int) -> int:
+    """The version a session of this user must carry; a password change raises it."""
+    row = conn.execute("SELECT version FROM user_session_versions WHERE user_id = ?", (user_id,)).fetchone()
+    return row[0] if row else 0
+
+
+def bump_session_version(conn: sqlite3.Connection, user_id: int) -> int:
+    """Invalidate every session of this user and return the new version."""
+    conn.execute(
+        "INSERT INTO user_session_versions (user_id, version) VALUES (?, 1) "
+        "ON CONFLICT(user_id) DO UPDATE SET version = version + 1",
+        (user_id,),
+    )
+    return session_version(conn, user_id)
 
 
 def require_roles(*roles: str, anonymous_redirect: str = "auth.login"):
